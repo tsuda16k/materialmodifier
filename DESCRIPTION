@@ -1,0 +1,32 @@
+Package: materialmodifier
+Title: Apply Material Editing Effects
+Version: 1.0.0
+Authors@R: 
+    person(given = "Hiroyuki",
+           family = "Tsuda",
+           role = c("aut", "cre"),
+           email = "tsuda16k@gmail.com",
+           comment = c(ORCID = "0000-0001-9396-5327"))
+Description: You can apply image processing effects that modifies the perceived material properties such as gloss,
+    smoothness, and blemishes. This is an implementation of the algorithm proposed by Boyadzhiev et al. (2015)
+    "Band-Sifting Decomposition for Image Based Material Editing". Documentation and practical tips of the package
+    is available at <https://github.com/tsuda16k/materialmodifier>.
+URL: https://github.com/tsuda16k/materialmodifier
+BugReports: https://github.com/tsuda16k/materialmodifier/issues/
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+Imports: 
+    jpeg,
+    magrittr,
+    methods,
+    png,
+    readbitmap,
+    stringr,
+    downloader,
+    imager,
+    moments
+Depends: 
+    R (>= 2.10)

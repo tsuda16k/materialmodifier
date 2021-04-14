@@ -1,0 +1,9 @@
+^materialmodifier\.Rproj$
+^\.Rproj\.user$
+^LICENSE\.md$
+^README\.Rmd$
+^cran-comments.md$
+^notes$
+.git
+.gitignore
+.DS_Store

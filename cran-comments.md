@@ -9,15 +9,14 @@ CRAN maintainers suggestion:
 
 Therefore, I
 
-- omitted examples for un-exported functions.
-- either unwrapped examples, or replaced dontrun with donttest where execution time is more than 5 seconds.
+- omitted examples for un-exported functions,
+- either unwrapped examples, or replaced dontrun with donttest where execution time is more than 5 seconds, and
 - removed getwd function from examples.
 
 ## Test environments
 - Local: x86_64-apple-darwin17.0 (64-bit), R 4.0.3
-- R-hub windows-x86_64-devel (r-devel)
-- R-hub ubuntu-gcc-release (r-release)
-- R-hub fedora-clang-devel (r-devel)
+- R-hub: Windows Server 2008 R2 SP1, R-devel, 32/64 bit
+- R-hub: Ubuntu Linux 20.04.1 LTS, R-release, GCC
 
 ## R CMD check results
 0 errors | 0 warnings | 1 notes  

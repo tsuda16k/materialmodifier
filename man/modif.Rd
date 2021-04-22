@@ -40,7 +40,7 @@ an output image
 Apply material editing effect
 }
 \examples{
-\dontrun{
+\donttest{
 plot(modif(face, effect = "shine", strength = 2.5)) # Apply the "shine" effect (make objects shiny)
 plot(modif(face, effect = "shine", strength = 0.2)) # Less shiny effect with a parameter less than 1
 plot(modif(face, effect = c("shine", "stain"), strength = c(0.2, 3))) # Less shiny and more stain

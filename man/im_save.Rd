@@ -11,7 +11,7 @@ im_save(im, name, path, format = "png", quality = 0.95)
 
 \item{name}{Name of the image file.}
 
-\item{path}{Path to file.}
+\item{path}{The image is saved in this direcory. For example, path = getwd()}
 
 \item{format}{Image format. Either "jpg", "png", "tiff", or "bmp". Default is "png".}
 
@@ -25,9 +25,11 @@ Save an image to disk
 }
 \examples{
 \dontrun{
-# face.png is saved to the current working directory
-imsave( face, path = getwd() )
-# myimage.jpg is saved to a specified directory
-imsave( face, name = "myimage", path = "path/to/image", format = "jpg" )
+# face.png is saved to a path (if a path is specified)
+im_save( face, path = NULL )
+# img.png is saved to a path (if a path is specified)
+im_save( face, name = "img", path = NULL )
+# myimage.jpg is saved to a path (if a path is specified)
+im_save( face, name = "myimage", path = NULL, format = "jpg" )
 }
 }

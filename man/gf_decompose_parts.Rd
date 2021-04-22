@@ -15,8 +15,3 @@ a list of images
 \description{
 Scale-space decomposition
 }
-\examples{
-\dontrun{
-dec = im_gray(face) \%>\% gf_decompose_scale \%>\% gf_decompose_parts
-}
-}

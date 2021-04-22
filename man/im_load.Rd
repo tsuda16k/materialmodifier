@@ -22,7 +22,7 @@ Load image from file or URL
 # load an image from disk
 im = im_load("path/to/your/image.jpg")
 plot(im)
+}
 # load an image from URL
 im = im_load("http://placehold.jp/150x150.png")
-}
 }

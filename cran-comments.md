@@ -1,3 +1,18 @@
+## Resubmission
+This is a re-submission.
+
+CRAN maintainers suggestion:
+
+- Please omit examples for un-exported functions,
+- dontrun should only be used if the example really cannot be executed, and
+- in examples, it is not allowed for a function to write in the user's home filespace including getwd.
+
+Therefore, I
+
+- omitted examples for un-exported functions.
+- either unwrapped examples, or replaced dontrun with donttest where execution time is more than 5 seconds.
+- removed getwd function from examples.
+
 ## Test environments
 - Local: x86_64-apple-darwin17.0 (64-bit), R 4.0.3
 - R-hub windows-x86_64-devel (r-devel)

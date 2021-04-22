@@ -19,8 +19,3 @@ a list of images
 \description{
 Scale-space decomposition by the guided filter
 }
-\examples{
-\dontrun{
-dec = gf_decompose(face)
-}
-}

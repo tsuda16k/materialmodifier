@@ -27,7 +27,7 @@ an output image
 Apply material editing effect
 }
 \examples{
-\dontrun{
+\donttest{
 # shine effect
 shine = list(freq = "H", amp = "H", sign = "P", strength = 2)
 plot(modif2(face, params = shine))

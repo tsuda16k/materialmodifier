@@ -21,11 +21,3 @@ an image
 \description{
 Reconstruct the original image from decomposed data
 }
-\examples{
-\dontrun{
-im1 = face
-dec = gf_decompose(im1)
-im2 = gf_reconstruct(dec)
-im_diff(im1, im2) # small difference means successful reconstruction
-}
-}

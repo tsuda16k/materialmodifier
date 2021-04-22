@@ -102,9 +102,9 @@ plot.nimg = function( x, rescale = FALSE, ... ){
 #' # load an image from disk
 #' im = im_load("path/to/your/image.jpg")
 #' plot(im)
+#' }
 #' # load an image from URL
 #' im = im_load("http://placehold.jp/150x150.png")
-#' }
 #' @export
 im_load = function( file, name ){
   if( grepl("^(http|ftp)s?://", file) ){ # if URL
@@ -151,31 +151,6 @@ im_load = function( file, name ){
 }
 
 
-#' Load all images in a directory and return them as a list
-#' @param path a directory path containing images
-#' @return a list of images
-#' @examples
-#' \dontrun{
-#' im = im_load_dir( "path/to/image/folder" )
-#' }
-im_load_dir = function( path ){
-  names = list.files( path, pattern = "\\.(jpg|jpeg|png|bmp|JPG|JPEG|PNG|BMP)$" )
-  l = vector( "list", length( names ) )
-  for( i in 1:length( names ) ){
-    tryCatch({
-      l[[ i ]] = im_load( paste0( path, "/", names[ i ] ) )
-    },
-    error = function(e) {
-      warning( paste0( names[ i ], " cannot be loaded, and ignored." ) )
-      l[[ i ]] = NULL
-    })
-    names( l )[ i ] = stringr::str_split( names[ i ], "[.]" )[[ 1 ]][ 1 ]
-  }
-  # names( l ) = names
-  return( l )
-}
-
-
 get_image_name_from_file = function( file ){
   tryCatch({
     name = stringr::str_split( file, "/" )[[ 1 ]]
@@ -192,16 +167,18 @@ get_image_name_from_file = function( file ){
 #' Save an image to disk
 #' @param im An image.
 #' @param name Name of the image file.
-#' @param path Path to file.
+#' @param path The image is saved in this direcory. For example, path = getwd()
 #' @param format Image format. Either "jpg", "png", "tiff", or "bmp". Default is "png".
 #' @param quality (jpg only) default is 0.95. Higher quality means less compression.
 #' @return No return value, called for side effects.
 #' @examples
 #' \dontrun{
-#' # face.png is saved to the current working directory
-#' imsave( face, path = getwd() )
-#' # myimage.jpg is saved to a specified directory
-#' imsave( face, name = "myimage", path = "path/to/image", format = "jpg" )
+#' # face.png is saved to a path (if a path is specified)
+#' im_save( face, path = NULL )
+#' # img.png is saved to a path (if a path is specified)
+#' im_save( face, name = "img", path = NULL )
+#' # myimage.jpg is saved to a path (if a path is specified)
+#' im_save( face, name = "myimage", path = NULL, format = "jpg" )
 #' }
 #' @export
 im_save = function( im, name, path, format = "png", quality = .95 ){
@@ -1102,10 +1079,6 @@ visualize_contrast = function( im, abs.range = NULL, Lcenter = 55 ){
 #' @param log_epsilon offset for log transformation
 #' @param filter_epsilon epsilon parameter
 #' @return a list of images
-#' @examples
-#' \dontrun{
-#' dec = gf_decompose(face)
-#' }
 gf_decompose = function( im, log_epsilon = 0.0001, filter_epsilon = 0.01 ){
   if( im_nc( im ) == 2 || im_nc( im ) > 3 ){
     warning( "The number of color channel must be either 1 or 3.")
@@ -1133,10 +1106,6 @@ gf_decompose = function( im, log_epsilon = 0.0001, filter_epsilon = 0.01 ){
 #' @param log_epsilon offset for log transformation
 #' @param filter_epsilon epsilon parameter
 #' @return a list of images
-#' @examples
-#' \dontrun{
-#' dec = gf_decompose_scale(im_gray(face))
-#' }
 gf_decompose_scale = function( im, depth = NULL, log_epsilon = 0.0001, filter_epsilon = 0.01 ){
   im = get_L( im )
   if( is.null( depth ) ){
@@ -1190,10 +1159,6 @@ gf_decompose_scale = function( im, depth = NULL, log_epsilon = 0.0001, filter_ep
 #' Scale-space decomposition
 #' @param dec output of gf_decompose_scale function
 #' @return a list of images
-#' @examples
-#' \dontrun{
-#' dec = im_gray(face) %>% gf_decompose_scale %>% gf_decompose_parts
-#' }
 gf_decompose_parts = function( dec ){
   L = dec$L
   residual = L$residual
@@ -1259,13 +1224,6 @@ gf_get_residual = function( im, Depth, log_epsilon = 0.0001, filter_epsilon = 0.
 #' @param ind a numeric vector
 #' @param include.residual either TRUE (default) or FALSE
 #' @return an image
-#' @examples
-#' \dontrun{
-#' im1 = face
-#' dec = gf_decompose(im1)
-#' im2 = gf_reconstruct(dec)
-#' im_diff(im1, im2) # small difference means successful reconstruction
-#' }
 gf_reconstruct = function( dec, scales, ind, include.residual = TRUE ){
   if( base::missing( scales ) ){
     scales = 1:dec$depth
@@ -1384,7 +1342,7 @@ get_BS_energy = function( im, mask ){
 #' Need not to change this value in most cases.
 #' @return an output image
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' plot(modif(face, effect = "shine", strength = 2.5)) # Apply the "shine" effect (make objects shiny)
 #' plot(modif(face, effect = "shine", strength = 0.2)) # Less shiny effect with a parameter less than 1
 #' plot(modif(face, effect = c("shine", "stain"), strength = c(0.2, 3))) # Less shiny and more stain
@@ -1430,7 +1388,7 @@ modif = function( im, effect, strength, max_size = 1024, log_epsilon = 0.0001, f
 #' Need not to change this value in most cases.
 #' @return an output image
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # shine effect
 #' shine = list(freq = "H", amp = "H", sign = "P", strength = 2)
 #' plot(modif2(face, params = shine))

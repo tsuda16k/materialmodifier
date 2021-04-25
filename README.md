@@ -207,16 +207,16 @@ left and boosted on the right.
 
 ## Applying multiple effects at the same time
 
-You can apply multiple effects at the same time. To do so, set vectors
-instead of scalars to the `effect` and `strength` parameters.
+You can apply multiple effects at the same time. To do so, set a vector
+instead of a scalar to the `effect` and `strength` parameters.
 
 The below is an example of applying the `shine` and `aging` effects
 simultaneously.
 
 ``` r
-# make a face more shiny and less blemished by a single line
-im2 = modif(face, effect = c("shine", "aging"), strength = c(2, 0.2))
-plot(im2)
+# Applying effects simultaneously
+im2 = modif(im, effect = c("shine", "aging"), strength = c(2, 0.2))
+plot(im2) # shinier and less blemished
 ```
 
 <p>
@@ -227,12 +227,15 @@ Applying each effect in sequence usually produces almost identical
 results.
 
 ``` r
+# Applying effects simultaneously
+im2 = modif(im, effect = c("shine", "aging"), strength = c(2, 0.2))
+
 # Applying effects in sequence
-im3 = modif(face, effect = "shine", strength = 2)
+im3 = modif(im, effect = "shine", strength = 2)
 im3 = modif(im3, effect = "aging", strength = 0.2)
 
 # pixel-wise mean squared error
-mean((im2-im3)^2) # this is very small, meaning that im2 and im3 are almost identical
+mean((im2-im3)^2) # this value is very small, meaning that both images are almost identical
 ```
 
 When you apply multiple effects to an image, it is recommended to use
@@ -246,7 +249,7 @@ The `effect` parameter of the `modif()` function is either “gloss”,
 
 The image below illustrates representative outputs of each effect  
 (A) List of effects  
-(B) Results of the aging effect for different levels of the strength
+(B) Results of the aging effect for various levels of the strength
 parameter
 
 <p>
@@ -255,9 +258,8 @@ parameter
 
 ## Effect of parameters: in more detail
 
-I would like to add a set of summary of output images derived from a
-combination of `effect` and `strength` parameters by using a single
-image as the input.
+I would like to present complete sets of outputs derived from a
+combination of `effect` and `strength` parameters.
 
 <p>
 <img src="notes/combinations_face.png" width="95%">
@@ -278,9 +280,9 @@ For example, the `rough` and `blemish` effects appear to produce similar
 results, but by comparing the outputs of setting a negative value to the
 strength parameter (the bottom row in each figure), we can see both
 effects are not identical. Technically, the `blemish` effect is
-equivalent to applying both `rough` and `stain` effects at the same
-time, because HLA (blemish) = HLP (rough) + HLN (stain) (see our paper
-for details about the BS feature).
+equivalent to applying both `rough` and `stain` effects simultaneously,
+because HLA (blemish) = HLP (rough) + HLN (stain) (see our paper for
+details about this notation).
 
 ## The modif2() function
 

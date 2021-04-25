@@ -36,10 +36,21 @@ Mac users need to install XQuartz (<https://www.xquartz.org/>).
 
 ## Installation
 
-This package is currently not available on CRAN. The development version
-of the package can be installed vie GitHub.
+#### Installation via CRAN
 
-### Installation via GitHub
+The package is available on CRAN. It can be installed with:
+
+``` r
+install.packages("materialmodifier")
+```
+
+Then, attach the package.
+
+``` r
+library(materialmodifier)
+```
+
+#### Installation via GitHub
 
 You can install the development version of the `materialmodifier`
 package via GitHub, by using the `devtools` package.
@@ -54,7 +65,7 @@ To install a package from GitHub,
 - On Windows,
 <a href="https://cran.r-project.org/bin/windows/Rtools/">Rtools</a>
 needs to be installed.  
-- On Mac, XCode may be needed to be installed.
+- On Mac, in some environments, the installation of XCode may be needed.
 
 After you have installed the required software stated above, install the
 package as follows:
@@ -64,7 +75,7 @@ package as follows:
 devtools::install_github("tsuda16k/materialmodifier")
 ```
 
-Then, load the package.
+Then, attach the package.
 
 ``` r
 library(materialmodifier)

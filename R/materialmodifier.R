@@ -1451,16 +1451,17 @@ modif_set_params = function( effects, strength, depth ){
     }
   } else {
     defaults = data.frame(
-      effect = c( "gloss", "shine", "spots", "blemish", "rough", "stain", "shadow" ),
-      freq = c( "H", "H", "H", "H", "H", "H", "L" ),
-      amp  = c( "H", "H", "H", "L", "L", "L", "A" ),
-      sign = c( "A", "P", "N", "A", "P", "N", "N" ),
-      strength = c( 2, 2, 3.5, 2.5, 2.5, 2.5, 3.5 ),
+      effect = c( "blemish", "gloss", "rough", "shadow", "shine", "spots", "stain" ),
+      freq = c( "H", "H", "H", "L", "H", "H", "H" ),
+      amp  = c( "L", "H", "L", "A", "H", "H", "L" ),
+      sign = c( "A", "A", "P", "N", "P", "N", "N" ),
+      strength = c( 2.5, 2, 2.5, 3.5, 2, 3.5, 2.5 ),
       stringsAsFactors = FALSE
     )
     params = defaults[ defaults$effect %in% effects, ]
     if( ! missing( strength ) ){
       params$strength = strength
+      params$strength = strength[ base::sort(effects, index.return = T)$ix ]
     }
     params = do.call( function(...) base::Map(list, ...), params ) # rows to a list
     params = unname( params )

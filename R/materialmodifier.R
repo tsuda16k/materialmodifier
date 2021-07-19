@@ -1460,8 +1460,7 @@ modif_set_params = function( effects, strength, depth ){
     )
     params = defaults[ defaults$effect %in% effects, ]
     if( ! missing( strength ) ){
-      params$strength = strength
-      params$strength = strength[ base::sort(effects, index.return = T)$ix ]
+      params$strength = strength[ base::sort( effects, index.return = TRUE )$ix ]
     }
     params = do.call( function(...) base::Map(list, ...), params ) # rows to a list
     params = unname( params )

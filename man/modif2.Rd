@@ -4,14 +4,14 @@
 \alias{modif2}
 \title{Apply material editing effect}
 \usage{
-modif2(im, params, max_size = 1024, log_epsilon = 1e-04, filter_epsilon = 0.01)
+modif2(im, params, max_size = 1280, log_epsilon = 1e-04, filter_epsilon = 0.01)
 }
 \arguments{
 \item{im}{An input image.}
 
 \item{params}{A list of parameter values. Parameter names are freq, amp, sign, and strength.}
 
-\item{max_size}{If the shorter side of the input image is larger than this value (the default is 1024),
+\item{max_size}{If the shorter side of the input image is larger than this value (the default is 1280),
 input image is resized. The modif function is very slow for large-resolution images.}
 
 \item{log_epsilon}{Offset for log transformation (default is 0.0001).

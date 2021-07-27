@@ -1333,7 +1333,7 @@ get_BS_energy = function( im, mask ){
 #' @param strength A numeric, which controls the strength of the effect. Strength values between 0 and 1 will
 #' reduce a feature, while strength values larger than 1 will boost a feature. A strength value of 1 does nothing.
 #' Negative values are allowed, which will invert a feature.
-#' @param max_size If the shorter side of the input image is larger than this value (the default is 1024),
+#' @param max_size If the shorter side of the input image is larger than this value (the default is 1280),
 #' input image is resized before applying effects. Because the modif() function is very slow for large-resolution
 #' images, it is useful to limit the image resolution to speed-up the image processing.
 #' @param log_epsilon Offset for log transformation (default is 0.0001).
@@ -1348,7 +1348,8 @@ get_BS_energy = function( im, mask ){
 #' plot(modif(face, effect = c("shine", "stain"), strength = c(0.2, 3))) # Less shiny and more stain
 #' }
 #' @export
-modif = function( im, effect, strength, max_size = 1024, log_epsilon = 0.0001, filter_epsilon = 0.01 ){
+modif = function( im, effect, strength, max_size = 1280, log_epsilon = 0.0001, filter_epsilon = 0.01 ){
+  effect = modif_BSNameToEffectName( effect )
   is_invalid_name = ! effect %in% c( "gloss", "shine", "spots", "blemish", "rough", "stain", "shadow", "aging" )
   if( any( is_invalid_name ) ){
     warning( paste0( "Invalid effect name: ",
@@ -1357,6 +1358,9 @@ modif = function( im, effect, strength, max_size = 1024, log_epsilon = 0.0001, f
   }
   if( all( strength == 1 ) ){
     return( im )
+  }
+  if( length( effect ) > 1 && length( strength ) == 1 ){
+    strength = rep( strength, length( effect ) )
   }
   im = im_resize_limit_min( im, max_size )
 
@@ -1380,7 +1384,7 @@ modif = function( im, effect, strength, max_size = 1024, log_epsilon = 0.0001, f
 #'
 #' @param im An input image.
 #' @param params A list of parameter values. Parameter names are freq, amp, sign, and strength.
-#' @param max_size If the shorter side of the input image is larger than this value (the default is 1024),
+#' @param max_size If the shorter side of the input image is larger than this value (the default is 1280),
 #' input image is resized. The modif function is very slow for large-resolution images.
 #' @param log_epsilon Offset for log transformation (default is 0.0001).
 #' Need not to change this value in most cases.
@@ -1407,7 +1411,7 @@ modif = function( im, effect, strength, max_size = 1024, log_epsilon = 0.0001, f
 #' plot(modif2(face, params = list(blemish, smooth)))
 #' }
 #' @export
-modif2 = function( im, params, max_size = 1024, log_epsilon = 0.0001, filter_epsilon = 0.01 ){
+modif2 = function( im, params, max_size = 1280, log_epsilon = 0.0001, filter_epsilon = 0.01 ){
   im = im_resize_limit_min( im, max_size )
 
   if( im_nc( im ) == 3 ){
@@ -1423,6 +1427,34 @@ modif2 = function( im, params, max_size = 1024, log_epsilon = 0.0001, filter_eps
   rec = clamping( gf_reconstruct( dec ) )
 
   return( rec )
+}
+
+
+#' Check the scale information of an image
+#'
+#' @param im An image.
+#' @return A list of depth (number of scale subband images), indexes of high amplitude subbands,
+#' and indexes of low amplitude subbands.
+#' @examples
+#' modif_dim(face)
+#' @export
+modif_dim = function( im ){
+  depth = floor( log2( min( im_size( im ) ) ) ) - 1
+  high = 1:floor( depth / 2 )
+  low = ( floor( depth / 2 ) + 1 ):depth
+  return( list( depth = depth, high = high, low = low ) )
+}
+
+
+modif_BSNameToEffectName = function( effect ){
+  effect = stringr::str_replace( effect, "HLA", "blemish" )
+  effect = stringr::str_replace( effect, "HHA", "gloss" )
+  effect = stringr::str_replace( effect, "HLP", "rough" )
+  effect = stringr::str_replace( effect, "LAN", "shadow" )
+  effect = stringr::str_replace( effect, "HHP", "shine" )
+  effect = stringr::str_replace( effect, "HHN", "spots" )
+  effect = stringr::str_replace( effect, "HLN", "stain" )
+  return( effect )
 }
 
 

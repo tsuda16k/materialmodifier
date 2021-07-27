@@ -8,7 +8,7 @@ modif(
   im,
   effect,
   strength,
-  max_size = 1024,
+  max_size = 1280,
   log_epsilon = 1e-04,
   filter_epsilon = 0.01
 )
@@ -23,7 +23,7 @@ modif(
 reduce a feature, while strength values larger than 1 will boost a feature. A strength value of 1 does nothing.
 Negative values are allowed, which will invert a feature.}
 
-\item{max_size}{If the shorter side of the input image is larger than this value (the default is 1024),
+\item{max_size}{If the shorter side of the input image is larger than this value (the default is 1280),
 input image is resized before applying effects. Because the modif() function is very slow for large-resolution
 images, it is useful to limit the image resolution to speed-up the image processing.}
 

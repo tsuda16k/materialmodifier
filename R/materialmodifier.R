@@ -856,7 +856,7 @@ im_resize_limit = function( im, bound, interpolation = 1 ){
 
 
 im_resize_limit_min = function( im, bound, interpolation = 1 ){
-  if( min( im_size( im ) ) < bound ){
+  if( min( im_size( im ) ) <= bound ){
     return( im )
   }
   if( im_width( im ) > im_height( im ) ){

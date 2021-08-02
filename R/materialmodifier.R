@@ -1336,6 +1336,8 @@ get_BS_energy = function( im, mask ){
 #' @param max_size If the shorter side of the input image is larger than this value (the default is 1280),
 #' input image is resized before applying effects. Because the modif() function is very slow for large-resolution
 #' images, it is useful to limit the image resolution to speed-up the image processing.
+#' If you do not want to change the resolution of the input image, you can enter a large value for max_size,
+#' or set max_size = NA
 #' @param log_epsilon Offset for log transformation (default is 0.0001).
 #' Need not to change this value in most cases.
 #' @param filter_epsilon Epsilon parameter of the Guided filter (default is 0.01).
@@ -1362,7 +1364,9 @@ modif = function( im, effect, strength, max_size = 1280, log_epsilon = 0.0001, f
   if( length( effect ) > 1 && length( strength ) == 1 ){
     strength = rep( strength, length( effect ) )
   }
-  im = im_resize_limit_min( im, max_size )
+  if( ! is.na( max_size ) ){
+    im = im_resize_limit_min( im, max_size )
+  }
 
   if( im_nc( im ) == 3 ){
     lab = sRGB2Lab( im )
@@ -1412,7 +1416,10 @@ modif = function( im, effect, strength, max_size = 1280, log_epsilon = 0.0001, f
 #' }
 #' @export
 modif2 = function( im, params, max_size = 1280, log_epsilon = 0.0001, filter_epsilon = 0.01 ){
-  im = im_resize_limit_min( im, max_size )
+  if( ! is.na( max_size ) ){
+    im = im_resize_limit_min( im, max_size )
+  }
+
 
   if( im_nc( im ) == 3 ){
     lab = sRGB2Lab( im )

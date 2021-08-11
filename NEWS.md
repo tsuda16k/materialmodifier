@@ -1,6 +1,7 @@
-# materialmodifier 1.0.1
+# materialmodifier 1.1.0
 
-* minor bug fix
+* the modif_dim function was added
+* bug fixes
 
 # materialmodifier 1.0.0
 

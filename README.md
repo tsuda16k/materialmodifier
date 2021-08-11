@@ -13,10 +13,12 @@ downloads](https://cranlogs.r-pkg.org/badges/grand-total/materialmodifier)](http
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://choosealicense.com/licenses/mit/)
 <!-- badges: end -->
 
-This is an R package that is used for applying image-based material
-editing effects. The user can edit the appearance of objects in an
-image, such as enhancing the gloss of fruits and removing the blemishes
-of facial skin.
+The figure below shows what can be done with this package The user can
+modify the appearance of objects in photographs. For example, they can
+make the skin smoother or, conversely, make blemishes more visible. They
+can also enhance the gloss of fruits or make it look wilted. Based on
+image processing techniques, the user can automatically perform such
+photo editing effects by simply calling a single R function.
 
 <p>
 <img src="notes/examples_demo.jpg" width="100%">
@@ -27,8 +29,8 @@ of facial skin.
 Details of this package (e.g. image processing algorithm) will be
 described in the article below:
 
-Tsuda and Kawabata (under review). materialmodifier: an R package for
-image-based material editing.
+Tsuda and Kawabata (under review). materialmodifier: An R package of
+photo editing effects for material perception research.
 
 ## Dependencies
 
@@ -83,22 +85,22 @@ library(materialmodifier)
 
 ## Example image
 
-The `materialmodifier` package includes an image data, which is useful
-when you want to try material editing effects right away. The variable
-name of the image is `face`.
+The `materialmodifier` package contains an image data, which is useful
+when you want to quickly try out a material editing effect. The variable
+name for this image is `face`.
 
-Internally, this is just a numeric array of size 500 x 450 x 3
-\[y-coordinate, x-coordinate, color channel\], meaning that it is 500
-pix height and 450 pix width, and has three color channels (Red, Green,
-and Blue). Each element of the array represents a pixel value, which can
-range between 0 and 1.
+Internally, this data is a numeric array with the size 500 x 500 x 3
+\[y-coordinate, x-coordinate, color channel\], which means a height of
+500 pix, a width of 500 pix, and three color channels (Red, Green, and
+Blue). Each element of the array represents a pixel value, which can be
+between 0 and 1.
 
 ``` r
 dim(face)
 #> [1] 500 500   3
 ```
 
-Image size information can be shown by typing the variable name.
+The image size information can be displayed by typing the variable name.
 
 ``` r
 face
@@ -111,11 +113,11 @@ To plot an image, use the `plot()` function.
 plot(face)
 ```
 
-<img src="notes/face.png" width="40%">
+<img src="notes/face.jpg" width="40%">
 
 ## Load an image
 
-To load an image you like, use the `im_load()` function.
+To load an image in your computer, use the `im_load()` function.
 
 ``` r
 im = im_load("path/to/your/image.jpg")
@@ -137,7 +139,8 @@ will load an image of roasted meat.
 
 ## Apply material editing effects
 
-The built-in face image is used in the following examples.  
+In the following example, we use the face image contained in the
+package.  
 For consistency purposes, the `face` image is labeled as `im`.
 
 ``` r
@@ -152,26 +155,27 @@ Below is an example of the `shine` effect.
 
 ``` r
 # apply the shine effect
-im2 = modif(im, effect = "shine", strength = 2.5) # may take some seconds
+im2 = modif(im, effect = "shine", strength = 3.0) # may take some seconds
 plot(im2) # see the result
 ```
 
 <p>
-<img src="notes/face.png" width="40%">
-<img src="notes/face_shine25.png" width="40%">
+<img src="notes/face.jpg" width="40%">
+<img src="notes/face_shine30.jpg" width="40%">
 </p>
 
 On the left is the input image, and on the right is the result of the
 `shine` effect.
 
-The `strength` parameter is used to control the strength of effects.
-Larger values of `strength` give stronger effects:
+The `strength` parameter is used to control the strength of the image
+processing effect. A larger value of `strength` will produce a stronger
+effect:
 
 <p>
-<img src="notes/face_shine01.png" width="20%"><img src="notes/face.png" width="20%"><img src="notes/face_shine20.png" width="20%"><img src="notes/face_shine30.png" width="20%"><img src="notes/face_shine40.png" width="20%">
+<img src="notes/face_shine01.jpg" width="20%"><img src="notes/face.jpg" width="20%"><img src="notes/face_shine20.jpg" width="20%"><img src="notes/face_shine30.jpg" width="20%"><img src="notes/face_shine40.jpg" width="20%">
 </p>
 
-The `strength` parameter is (from left to right) 0.1, 1, 2, 3, and 4.
+The `strength` parameters, from left to right, are 0.1, 1, 2, 3, and 4.
 
 Note that when the `strength` parameter is 1, the `modif()` function
 just returns the input image. Therefore the second image from the left
@@ -197,13 +201,30 @@ plot(im3)
 ```
 
 <p>
-<img src="notes/face_aging01.png" width="30%">
-<img src="notes/face.png" width="30%">
-<img src="notes/face_aging25.png" width="30%">
+<img src="notes/face_aging01.jpg" width="30%">
+<img src="notes/face.jpg" width="30%">
+<img src="notes/face_aging25.jpg" width="30%">
 </p>
 
 Compared to the original (center), skin blemishes are reduced on the
 left and boosted on the right.
+
+## The strength parameter
+
+Using the aging effect as an example, the effect of the strength
+parameter is examined in more detail in the figure below. If the value
+of the strength parameter is greater than 1, a boosting effect that
+increases the stains/blemishes occurs; if it is less than 1, a reducing
+effect that decreases the stains/blemishes occurs.
+
+<p>
+<img src="notes/examples_strength.jpg" width="100%">
+</p>
+
+To get a boosting effect, a strength value of 2 to 6 usually yields
+reasonable results. The strength parameter can be a negative value, but
+in most cases setting a negative value will produce unrealistic results
+(e.g., contrast reversal)
 
 ## Applying multiple effects at the same time
 

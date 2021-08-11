@@ -26,7 +26,7 @@ knitr::opts_chunk$set(
 
 This is an R package that is used for applying image-based material editing effects. The user can edit the appearance of objects in an image, such as enhancing the gloss of fruits and removing the blemishes of facial skin.
 
-<p><img src="notes/summary_tiny.png" width="100%"></p>
+<p><img src="notes/examples_demo.jpg" width="100%"></p>
 
 ## Paper
 

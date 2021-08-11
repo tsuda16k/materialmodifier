@@ -19,7 +19,7 @@ image, such as enhancing the gloss of fruits and removing the blemishes
 of facial skin.
 
 <p>
-<img src="notes/summary_tiny.png" width="100%">
+<img src="notes/examples_demo.jpg" width="100%">
 </p>
 
 ## Paper
@@ -95,14 +95,14 @@ range between 0 and 1.
 
 ``` r
 dim(face)
-#> [1] 500 450   3
+#> [1] 500 500   3
 ```
 
 Image size information can be shown by typing the variable name.
 
 ``` r
 face
-#> face: 500 [height] x 450 [width] x 3 [colour channels]
+#> image: 500 [height] x 500 [width] x 3 [colour channels]
 ```
 
 To plot an image, use the `plot()` function.
@@ -408,18 +408,18 @@ energy information of an image.
 en = get_BS_energy(face)
 en
 #>    feature       energy normalized
-#> 1      HHP 0.0012270066 0.10296136
-#> 2      HHN 0.0015918547 0.13357672
-#> 3      HLP 0.0002768922 0.02323475
-#> 4      HLN 0.0001923895 0.01614391
-#> 5      LHP 0.0023203040 0.19470283
-#> 6      LHN 0.0046927525 0.39378123
-#> 7      LLP 0.0010638444 0.08926998
-#> 8      LLN 0.0005521125 0.04632921
-#> 9    total 0.0119171563 1.00000000
-#> 10     HLA 0.0003897122 0.03270177
-#> 11     LAN 0.0064410873 0.54048861
-#> 12   aging 0.0021860476 0.18343702
+#> 1      HHP 0.0015346350 0.08824827
+#> 2      HHN 0.0022643348 0.13020923
+#> 3      HLP 0.0002463833 0.01416813
+#> 4      HLN 0.0001806730 0.01038950
+#> 5      LHP 0.0025246800 0.14518023
+#> 6      LHN 0.0078669494 0.45238425
+#> 7      LLP 0.0017787148 0.10228394
+#> 8      LLN 0.0009936014 0.05713646
+#> 9    total 0.0173899717 1.00000000
+#> 10     HLA 0.0003665031 0.02107554
+#> 11     LAN 0.0104811699 0.60271345
+#> 12   aging 0.0028296759 0.16271883
 ```
 
 This function calculates the energy of each BS feature (defined as the

@@ -25,7 +25,9 @@ Negative values are allowed, which will invert a feature.}
 
 \item{max_size}{If the shorter side of the input image is larger than this value (the default is 1280),
 input image is resized before applying effects. Because the modif() function is very slow for large-resolution
-images, it is useful to limit the image resolution to speed-up the image processing.}
+images, it is useful to limit the image resolution to speed-up the image processing.
+If you do not want to change the resolution of the input image, you can enter a large value for max_size,
+or set max_size = NA}
 
 \item{log_epsilon}{Offset for log transformation (default is 0.0001).
 Need not to change this value in most cases.}

@@ -167,7 +167,7 @@ get_image_name_from_file = function( file ){
 #' Save an image to disk
 #' @param im An image.
 #' @param name Name of the image file.
-#' @param path The image is saved in this direcory. For example, path = getwd()
+#' @param path The image is saved in this directory. For example, path = getwd()
 #' @param format Image format. Either "jpg", "png", "tiff", or "bmp". Default is "png".
 #' @param quality (jpg only) default is 0.95. Higher quality means less compression.
 #' @return No return value, called for side effects.

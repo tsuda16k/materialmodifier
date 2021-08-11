@@ -11,7 +11,7 @@ im_save(im, name, path, format = "png", quality = 0.95)
 
 \item{name}{Name of the image file.}
 
-\item{path}{The image is saved in this direcory. For example, path = getwd()}
+\item{path}{The image is saved in this directory. For example, path = getwd()}
 
 \item{format}{Image format. Either "jpg", "png", "tiff", or "bmp". Default is "png".}
 

@@ -13,7 +13,7 @@ downloads](https://cranlogs.r-pkg.org/badges/grand-total/materialmodifier)](http
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://choosealicense.com/licenses/mit/)
 <!-- badges: end -->
 
-The figure below shows what can be done with this package The user can
+The figure below shows what can be done with this package. The user can
 modify the appearance of objects in photographs. For example, they can
 make the skin smoother or, conversely, make blemishes more visible. They
 can also enhance the gloss of fruits or make it look wilted. Based on
@@ -26,7 +26,7 @@ photo editing effects by simply calling a single R function.
 
 ## Paper
 
-Details of this package (e.g. image processing algorithm) will be
+Details of this package (background, algorithm, usage, etc.) will be
 described in the article below:
 
 Tsuda and Kawabata (under review). materialmodifier: An R package of
@@ -190,7 +190,7 @@ Below is an example of the `aging` effect.
 
 ``` r
 # load the face image
-im = im_load("https://raw.githubusercontent.com/tsuda16k/materialmodifier/master/notes/meat.png")
+im = im_load("https://raw.githubusercontent.com/tsuda16k/materialmodifier/master/notes/face.jpg")
 # apply the aging effect
 im2 = modif(im, "aging", 0.1)
 im3 = modif(im, "aging", 2.5)

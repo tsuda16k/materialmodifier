@@ -247,7 +247,7 @@ Although you can get the same result by applying each effect in turn (e.g., appl
 
 ## The modif2() function
 
-The ```modif2()``` function allows for a precise control over which image component(s) to manipulate. For example, boosting the ```LAA``` feature (low spatial frequency, all (high and low) amplitudes, and all (positive and negative) signs) can be performed as follows.
+The ```modif2()``` function allows for a precise control over which image feature (i.e., BE feature) to manipulate. For example, boosting the ```LAA``` feature (low spatial frequency, all (high and low) amplitudes, and all (positive and negative) signs) can be performed as follows.
 
 ```{r, eval=FALSE, echo=TRUE}
 # modify the LAA feature
@@ -265,7 +265,7 @@ shine = list(freq = "H", amp = "H", sign = "P", strength = 2)
 plot(modif2(face, params = shine))
 
 # shine effect (equivalent to the above)
-shine2 = list(freq = 1:4, amp = "H", sign = "P", strength = 2)
+shine2 = list(freq = modif_dim(face)$high, amp = "H", sign = "P", strength = 2)
 plot(modif2(face, params = shine2))
 
 # you can specify a feature name directly, instead of specifying freq/amp/sign separately
@@ -283,7 +283,7 @@ plot(modif2(face, params = list(blemish, smooth)))
 The ```modif()``` function has 6 arguments.
 
 ```{r, eval=FALSE, echo=TRUE}
-modif(im, effect, strength, max_size = 1024, log_epsilon = 0.0001, filter_epsilon = 0.01)
+modif(im, effect, strength, max_size = 1280, log_epsilon = 0.0001, filter_epsilon = 0.01)
 ```
 
 Table of arguments of the ```modif()``` function:
@@ -293,7 +293,7 @@ Argument = c("im", "effect", "strength", "max_size", "log_epsilon", "filter_epsi
 Meaning = c( "Input image", "Effect name", "Strength of effect",
              "Image resolution limit", "Offset for log transformation", "Epsilon parameter of the Guided filter" )
 Value = c( "an image object", 'Either "gloss", "shine", "spots", "blemish", "rough", "stain", "shadow", or "aging"', "a float value or a float vector", "an integer", "a float value", "a float value" )
-Default = c( "", "", "", "1024", "0.0001", "0.01" )
+Default = c( "", "", "", "1280", "0.0001", "0.01" )
 doc_sketch = data.frame( Argument, Meaning, Value, Default, stringsAsFactors = F )
 library(knitr)
 kable(doc_sketch)
@@ -302,7 +302,7 @@ kable(doc_sketch)
 The ```im``` is an image object we can get by using the ```im_load()``` function.  
 The ```effect``` and ```strength``` parameters have been described above.
 
-The ```max_size``` parameter can be used to restrict the image resolution. If the shorter side of the input image is larger than this value (the default is 1024), input image is resized before applying effects. For example, when the input image has 1024px x 2048px resolution, and if ```max_size``` is 512, then the input image is first resized to 512px x 1024px. 
+The ```max_size``` parameter can be used to restrict the image resolution. If the shorter side of the input image is larger than this value (the default is 1280), input image is resized before applying effects. For example, when the input image has 1024 x 2048 px resolution, and if ```max_size``` is 512, then the input image is first resized to 512 x 1024 px. 
 Because the modif() function is very slow for large-resolution images, it is useful to limit the image resolution to speed up the image processing.
 
 The ```log_epsilon``` and ```filter_epsilon``` are parameters that are used for image processing procedures. You need not to change this value in most cases.
@@ -312,7 +312,7 @@ The ```log_epsilon``` and ```filter_epsilon``` are parameters that are used for 
 The ```modif2()``` function has 5 arguments.
 
 ```{r, eval=FALSE, echo=TRUE}
-modif(im, params, max_size = 1024, log_epsilon = 0.0001, filter_epsilon = 0.01)
+modif(im, params, max_size = 1280, log_epsilon = 0.0001, filter_epsilon = 0.01)
 ```
 
 Table of arguments of the ```modif()``` function:
@@ -322,13 +322,13 @@ Argument = c("im", "params", "max_size", "log_epsilon", "filter_epsilon")
 Meaning = c( "Input image", "A list of parameter values",
              "Image resolution limit", "Offset for log transformation", "Epsilon parameter of the Guided filter" )
 Value = c( "an image object", "a list", "an integer", "a float value", "a float value" )
-Default = c( "", "", "1024", "0.0001", "0.01" )
+Default = c( "", "", "1280", "0.0001", "0.01" )
 doc_sketch = data.frame( Argument, Meaning, Value, Default, stringsAsFactors = F )
 library(knitr)
 kable(doc_sketch)
 ```
 
-To the ```params``` parameter, set a list of material editing parameters:
+For the ```params``` parameter, set a list of material editing parameters:
 
 ```{r, eval=FALSE, echo=TRUE}
 # shine effect (boost the HHP feature)
@@ -336,7 +336,7 @@ shine = list(freq = "H", amp = "H", sign = "P", strength = 2)
 plot(modif2(face, params = shine))
 
 # shine effect (equivalent to the above)
-shine2 = list(freq = 1:4, amp = "H", sign = "P", strength = 2)
+shine2 = list(freq = modif_dim(face)$high, amp = "H", sign = "P", strength = 2)
 plot(modif2(face, params = shine2))
 
 # you can specify a feature name directly, instead of specifying freq/amp/sign separately
@@ -351,19 +351,3 @@ plot(modif2(face, params = list(blemish, smooth)))
 
 The other parameters are the same as the ```modif()``` function.
 
-## Calculate the BS feature energy
-
-By using the ```get_BS_energy()``` function, we can calculate the BS feature energy information of an image.
-
-```{r}
-# calculate the BS feature energy
-en = get_BS_energy(face)
-en
-```
-
-This function calculates the energy of each BS feature (defined as the sum of squared magnitude of a given
-BS feature). The total energy (the 9th row) is the sum of the eight BS feature energies.
-
-Each energy is divided by the total energy to give the normalized energy measure.
-
-In addition to the eight BS features, this function also calculates the energy for HLA, LAN, and aging features (10th to 12th rows).

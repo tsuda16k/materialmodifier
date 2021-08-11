@@ -325,9 +325,9 @@ image processing.
 ## The modif2() function
 
 The `modif2()` function allows for a precise control over which image
-component(s) to manipulate. For example, boosting the `LAA` feature (low
-spatial frequency, all (high and low) amplitudes, and all (positive and
-negative) signs) can be performed as follows.
+feature (i.e., BE feature) to manipulate. For example, boosting the
+`LAA` feature (low spatial frequency, all (high and low) amplitudes, and
+all (positive and negative) signs) can be performed as follows.
 
 ``` r
 # modify the LAA feature
@@ -346,7 +346,7 @@ shine = list(freq = "H", amp = "H", sign = "P", strength = 2)
 plot(modif2(face, params = shine))
 
 # shine effect (equivalent to the above)
-shine2 = list(freq = 1:4, amp = "H", sign = "P", strength = 2)
+shine2 = list(freq = modif_dim(face)$high, amp = "H", sign = "P", strength = 2)
 plot(modif2(face, params = shine2))
 
 # you can specify a feature name directly, instead of specifying freq/amp/sign separately
@@ -364,7 +364,7 @@ plot(modif2(face, params = list(blemish, smooth)))
 The `modif()` function has 6 arguments.
 
 ``` r
-modif(im, effect, strength, max_size = 1024, log_epsilon = 0.0001, filter_epsilon = 0.01)
+modif(im, effect, strength, max_size = 1280, log_epsilon = 0.0001, filter_epsilon = 0.01)
 ```
 
 Table of arguments of the `modif()` function:
@@ -374,7 +374,7 @@ Table of arguments of the `modif()` function:
 | im              | Input image                            | an image object                                                                     |         |
 | effect          | Effect name                            | Either “gloss”, “shine”, “spots”, “blemish”, “rough”, “stain”, “shadow”, or “aging” |         |
 | strength        | Strength of effect                     | a float value or a float vector                                                     |         |
-| max\_size       | Image resolution limit                 | an integer                                                                          | 1024    |
+| max\_size       | Image resolution limit                 | an integer                                                                          | 1280    |
 | log\_epsilon    | Offset for log transformation          | a float value                                                                       | 0.0001  |
 | filter\_epsilon | Epsilon parameter of the Guided filter | a float value                                                                       | 0.01    |
 
@@ -384,10 +384,10 @@ The `effect` and `strength` parameters have been described above.
 
 The `max_size` parameter can be used to restrict the image resolution.
 If the shorter side of the input image is larger than this value (the
-default is 1024), input image is resized before applying effects. For
-example, when the input image has 1024px x 2048px resolution, and if
-`max_size` is 512, then the input image is first resized to 512px x
-1024px. Because the modif() function is very slow for large-resolution
+default is 1280), input image is resized before applying effects. For
+example, when the input image has 1024 x 2048 px resolution, and if
+`max_size` is 512, then the input image is first resized to 512 x 1024
+px. Because the modif() function is very slow for large-resolution
 images, it is useful to limit the image resolution to speed up the image
 processing.
 
@@ -400,7 +400,7 @@ cases.
 The `modif2()` function has 5 arguments.
 
 ``` r
-modif(im, params, max_size = 1024, log_epsilon = 0.0001, filter_epsilon = 0.01)
+modif(im, params, max_size = 1280, log_epsilon = 0.0001, filter_epsilon = 0.01)
 ```
 
 Table of arguments of the `modif()` function:
@@ -409,11 +409,11 @@ Table of arguments of the `modif()` function:
 |:----------------|:---------------------------------------|:----------------|:--------|
 | im              | Input image                            | an image object |         |
 | params          | A list of parameter values             | a list          |         |
-| max\_size       | Image resolution limit                 | an integer      | 1024    |
+| max\_size       | Image resolution limit                 | an integer      | 1280    |
 | log\_epsilon    | Offset for log transformation          | a float value   | 0.0001  |
 | filter\_epsilon | Epsilon parameter of the Guided filter | a float value   | 0.01    |
 
-To the `params` parameter, set a list of material editing parameters:
+For the `params` parameter, set a list of material editing parameters:
 
 ``` r
 # shine effect (boost the HHP feature)
@@ -421,7 +421,7 @@ shine = list(freq = "H", amp = "H", sign = "P", strength = 2)
 plot(modif2(face, params = shine))
 
 # shine effect (equivalent to the above)
-shine2 = list(freq = 1:4, amp = "H", sign = "P", strength = 2)
+shine2 = list(freq = modif_dim(face)$high, amp = "H", sign = "P", strength = 2)
 plot(modif2(face, params = shine2))
 
 # you can specify a feature name directly, instead of specifying freq/amp/sign separately
@@ -435,37 +435,3 @@ plot(modif2(face, params = list(blemish, smooth)))
 ```
 
 The other parameters are the same as the `modif()` function.
-
-## Calculate the BS feature energy
-
-By using the `get_BS_energy()` function, we can calculate the BS feature
-energy information of an image.
-
-``` r
-# calculate the BS feature energy
-en = get_BS_energy(face)
-en
-#>    feature       energy normalized
-#> 1      HHP 0.0015346350 0.08824827
-#> 2      HHN 0.0022643348 0.13020923
-#> 3      HLP 0.0002463833 0.01416813
-#> 4      HLN 0.0001806730 0.01038950
-#> 5      LHP 0.0025246800 0.14518023
-#> 6      LHN 0.0078669494 0.45238425
-#> 7      LLP 0.0017787148 0.10228394
-#> 8      LLN 0.0009936014 0.05713646
-#> 9    total 0.0173899717 1.00000000
-#> 10     HLA 0.0003665031 0.02107554
-#> 11     LAN 0.0104811699 0.60271345
-#> 12   aging 0.0028296759 0.16271883
-```
-
-This function calculates the energy of each BS feature (defined as the
-sum of squared magnitude of a given BS feature). The total energy (the
-9th row) is the sum of the eight BS feature energies.
-
-Each energy is divided by the total energy to give the normalized energy
-measure.
-
-In addition to the eight BS features, this function also calculates the
-energy for HLA, LAN, and aging features (10th to 12th rows).

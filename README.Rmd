@@ -181,6 +181,10 @@ plot(im3)
 
 Compared to the original (center), skin blemishes are reduced on the left and boosted on the right.
 
+The figure below summarizes outputs of the shine and aging effects.
+
+<p><img src="notes/examples_functionality.jpg" width="100%"></p>
+
 ## The strength parameter
 
 Using the aging effect as an example, the effect of the strength parameter is examined in more detail in the figure below. If the value of the strength parameter is greater than 1, a boosting effect that increases the stains/blemishes occurs; if it is less than 1, a reducing effect that decreases the stains/blemishes occurs.
@@ -189,59 +193,57 @@ Using the aging effect as an example, the effect of the strength parameter is ex
 
 To get a boosting effect, a strength value of 2 to 6 usually yields reasonable results. The strength parameter can be a negative value, but in most cases setting a negative value will produce unrealistic results (e.g., contrast reversal)
 
+## The effect parameter
+
+This package has several other effects in addition to the shine and aging effects. All available effects are: shine, spots, rough, stain, blemish, shadow, aging. A visual summary of these effects is shown in the figure below.
+
+<p><img src="notes/examples_list.jpg" width="100%"></p>
+
+The first column of the figure shows the name of each effect, and the second column shows the perceptual features controlled by that effect. The third and subsequent columns show the input and output images.
+
+The figure contains a column called BS feature. The BS feature is an important term related to the image processing algorithm (briefly, the image area to be manipulated, extracted from the input image based on a certain criterion). The algorithm achieves image editing effects by decreasing or increasing the weight of the BS feature in the input image. 
+
+## Summary of image processing results with different strength values for each effect
+
+To better understand the nature of each image editing effect, it is helpful to compare the results of all editing effects on a single image. The figure below summarizes the results of the editing effects on a face and a food image (note that the image in the row with a strength value of 1 is the input image). By comparing the images in the rows with large values of the strength parameter, it is easier to see the characteristics of each effect.
+
+<p><img src="notes/examples_list2.jpg" width="100%"></p>
+
+Setting a negative value for the strength parameter often results in an unnatural image (see images in the bottom rows of the figure), but using a large negative value for the strength parameter makes it easier to compare which areas are affected by each effect. For example, the rough effect and the blemish effect produce similar results, but if you compare the images in the row with a strength value of -5, you can clearly see that they are not identical.
+
+Technically, the blemish effect is equivalent to giving both the rough and stain effects at the same time. In order to get a more formal understanding of these properties, we need to know more about the specifics of how image processing algorithms work. See our paper for details.
+
 ## Applying multiple effects at the same time
 
-You can apply multiple effects at the same time. To do so, set a vector instead of a scalar to the ```effect``` and  ```strength``` parameters.
-
-The below is an example of applying the ```shine``` and ```aging``` effects simultaneously.
+You can also perform multiple editing effects at the same time. For example, you can apply the shine effect and the aging effect at the same time as follows.
 
 ```{r, eval=FALSE, echo=TRUE}
-# Applying effects simultaneously
-im2 = modif(im, effect = c("shine", "aging"), strength = c(2, 0.2))
-plot(im2) # shinier and less blemished
+# Applying multiple effects at the same time
+im2 = modif(im, effect = c("shine", "aging"), strength = c(0.2, 3))
+plot(im2)
 ```
 
-<p><img src="notes/face_shine_aging.png" width="30%"></p>
+<p><img src="notes/face_shine_aging.jpg" width="30%"></p>
 
-Applying each effect in sequence usually produces almost identical results.
+The above command simultaneously applies a shine effect of strength = 0.2 and an aging effect of strength = 3, resulting in a less shiny and more blemished image.
+
+Applying each effect in sequence produces almost identical results.
 
 ```{r, eval=FALSE, echo=TRUE}
-# Applying effects simultaneously
-im2 = modif(im, effect = c("shine", "aging"), strength = c(2, 0.2))
+# Applying multiple effects at the same time
+im2 = modif(im, effect = c("shine", "aging"), strength = c(0.2, 3))
 
 # Applying effects in sequence
-im3 = modif(im, effect = "shine", strength = 2)
-im3 = modif(im3, effect = "aging", strength = 0.2)
+im3 = modif(im, effect = "shine", strength = 0.2)
+im3 = modif(im3, effect = "aging", strength = 3)
 
 # pixel-wise mean squared error
-mean((im2-im3)^2) # this value is very small, meaning that both images are almost identical
+mean((im2-im3)^2)
+# this value is very small, meaning that both images are almost identical
 ```
 
-When you apply multiple effects to an image, it is recommended to use the single-line approach, rather than applying each effect in sequence, because the former approach is faster.
+Although you can get the same result by applying each effect in turn (e.g., applying an aging effect to the output of a shine effect), we recommend doing them in a single line, because it saves time needed for image processing. 
 
-## List of material editing effects
-
-The ```effect``` parameter of the ```modif()``` function is either "gloss", "shine", "spots", "blemish", "rough", "stain", "shadow", or "aging".
-
-The image below illustrates representative outputs of each effect  
-(A) List of effects  
-(B) Results of the aging effect for various levels of the strength parameter
-
-<p><img src="notes/effect_table_small_tiny.png" width="95%"></p>
-
-## Effect of parameters: in more detail
-
-I would like to present complete sets of outputs derived from a combination of ```effect``` and ```strength``` parameters.
-
-<p><img src="notes/combinations_face.png" width="95%"></p>
-
-<p><img src="notes/combinations_meat.png" width="95%"></p>
-
-<p><img src="notes/combinations_kettle.png" width="95%"></p>
-
-Note that although setting a negative value to the ```strength``` parameter produces weird results in most cases (see the bottom row in each figure), doing so is sometimes useful to find the region that was changed by the ```modif()``` function.
-
-For example, the ```rough``` and ```blemish``` effects appear to produce similar results, but by comparing the outputs of setting a negative value to the strength parameter (the bottom row in each figure), we can see both effects are not identical. Technically, the ```blemish``` effect is equivalent to applying both ```rough``` and ```stain``` effects simultaneously, because HLA (blemish) = HLP (rough) + HLN (stain) (see our paper for details about this notation).
 
 ## The modif2() function
 

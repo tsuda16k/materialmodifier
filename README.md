@@ -435,3 +435,34 @@ plot(modif2(face, params = list(blemish, smooth)))
 ```
 
 The other parameters are the same as the `modif()` function.
+
+## Calculation of BS feature energy
+
+The `get_BS_energy()` function can be used to calculate the energy of
+each BS feature in an image. The energy of a BS feature is defined as
+the sum of its squared luminance: All the pixel values of a specific BS
+feature image are squared and then summed.
+
+``` r
+get_BS_energy(face)
+#>    feature       energy normalized
+#> 1      HHP 0.0015346350 0.08824827
+#> 2      HHN 0.0022643348 0.13020923
+#> 3      HLP 0.0002463833 0.01416813
+#> 4      HLN 0.0001806730 0.01038950
+#> 5      LHP 0.0025246800 0.14518023
+#> 6      LHN 0.0078669494 0.45238425
+#> 7      LLP 0.0017787148 0.10228394
+#> 8      LLN 0.0009936014 0.05713646
+#> 9    total 0.0173899717 1.00000000
+#> 10     HLA 0.0003665031 0.02107554
+#> 11     LAN 0.0104811699 0.60271345
+#> 12   aging 0.0028296759 0.16271883
+```
+
+The output of the `get_BS_energy()` function is a data frame, which has
+the energy values of eight BS features (rows 1-8) and the total energy
+(sum of the above eight, row 9). In addition, it has the energy values
+of composite features (HLA, LAN, aging) of multiple BS features. The
+`normalized` column is obtained by dividing each energy value by the
+total energy value.

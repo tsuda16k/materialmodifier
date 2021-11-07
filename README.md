@@ -15,10 +15,10 @@ downloads](https://cranlogs.r-pkg.org/badges/grand-total/materialmodifier)](http
 
 The figure below shows what can be done with this package. The user can
 modify the appearance of objects in photographs. For example, they can
-make the skin smoother or, conversely, make blemishes more visible. They
-can also enhance the gloss of fruits or make it look wilted. Based on
-image processing techniques, the user can automatically perform such
-photo editing effects by simply calling a single R function.
+make human skin smoother or, conversely, make blemishes more visible.
+They can also enhance the gloss of fruit or make it look wilted. Based
+on image processing techniques, the user can automatically perform such
+photo editing effects by simply calling on a single R function.
 
 <p>
 <img src="notes/examples_demo.jpg" width="100%">
@@ -67,7 +67,7 @@ To install a package from GitHub,
 - On Windows,
 <a href="https://cran.r-project.org/bin/windows/Rtools/">Rtools</a>
 needs to be installed.  
-- On Mac, in some environments, the installation of XCode may be needed.
+- On Mac, in some environments, installation of XCode may be needed.
 
 After you have installed the required software stated above, install the
 package as follows:
@@ -85,9 +85,9 @@ library(materialmodifier)
 
 ## Example image
 
-The `materialmodifier` package contains an image data, which is useful
-when you want to quickly try out a material editing effect. The variable
-name for this image is `face`.
+The `materialmodifier` package contains data for an image, which is
+useful when you want to quickly try out a material editing effect. The
+variable name for this image is `face`.
 
 Internally, this data is a numeric array with the size 500 x 500 x 3
 \[y-coordinate, x-coordinate, color channel\], which means a height of
@@ -392,7 +392,7 @@ images, it is useful to limit the image resolution to speed up the image
 processing.
 
 The `log_epsilon` and `filter_epsilon` are parameters that are used for
-image processing procedures. You need not to change this value in most
+image processing procedures. You need not change this value in most
 cases.
 
 ## Parameters of the modif2() function

@@ -262,6 +262,23 @@ certain criterion). The algorithm achieves image editing effects by
 decreasing or increasing the weight of the BS feature in the input
 image.
 
+Since terms such as `shine` and `aging` are aliases for BS features,
+each effect can also be applied using the name of the BS features as
+follows.
+
+``` r
+# im1 and im2 are identical
+im1 = modif(face, "shine", 3)
+im2 = modif(face, "HHP", 3)
+
+# im3 and im4 are identical
+im3 = modif(face, "aging", 3)
+im4 = modif(face, c("HLA", "HHN"), 3)
+```
+
+Note that the `aging` effect is an effect that edits two BS features,
+HLA and HHN, so two BS feature names are specified above.
+
 ## Summary of image processing results with different strength values for each effect
 
 To better understand the nature of each image editing effect, it is
@@ -534,19 +551,16 @@ feature image are squared and then summed.
 
 ``` r
 get_BS_energy(face)
-#>    feature       energy normalized
-#> 1      HHP 0.0015346350 0.08824827
-#> 2      HHN 0.0022643348 0.13020923
-#> 3      HLP 0.0002463833 0.01416813
-#> 4      HLN 0.0001806730 0.01038950
-#> 5      LHP 0.0025246800 0.14518023
-#> 6      LHN 0.0078669494 0.45238425
-#> 7      LLP 0.0017787148 0.10228394
-#> 8      LLN 0.0009936014 0.05713646
-#> 9    total 0.0173899717 1.00000000
-#> 10     HLA 0.0003665031 0.02107554
-#> 11     LAN 0.0104811699 0.60271345
-#> 12   aging 0.0028296759 0.16271883
+#>   feature       energy  normalized
+#> 1     HHP 5.131705e-04 0.034824299
+#> 2     HHN 7.377783e-04 0.050066426
+#> 3     HLP 8.040328e-05 0.005456253
+#> 4     HLN 5.821145e-05 0.003950291
+#> 5     LHP 3.514644e-03 0.238507480
+#> 6     LHN 7.169572e-03 0.486534868
+#> 7     LLP 1.570909e-03 0.106603543
+#> 8     LLN 1.091301e-03 0.074056840
+#> 9   total 1.473599e-02 1.000000000
 ```
 
 The output of the `get_BS_energy()` function is a data frame, which has
@@ -560,17 +574,14 @@ targeted for calculation.
 ``` r
 mask = im_load("https://raw.githubusercontent.com/tsuda16k/materialmodifier/master/notes/mask.jpg")
 get_BS_energy(face, mask)
-#>    feature       energy normalized
-#> 1      HHP 0.0001820414 0.01581275
-#> 2      HHN 0.0006511505 0.05656121
-#> 3      HLP 0.0002431093 0.02111732
-#> 4      HLN 0.0001337165 0.01161508
-#> 5      LHP 0.0014786798 0.12844329
-#> 6      LHN 0.0054231308 0.47107207
-#> 7      LLP 0.0028524325 0.24777225
-#> 8      LLN 0.0005480557 0.04760603
-#> 9    total 0.0115123164 1.00000000
-#> 10     HLA 0.0003247685 0.02821052
-#> 11     LAN 0.0068453860 0.59461413
-#> 12   aging 0.0010850698 0.09425295
+#>   feature       energy  normalized
+#> 1     HHP 7.320857e-05 0.007683400
+#> 2     HHN 2.737560e-04 0.028731286
+#> 3     HLP 7.994283e-05 0.008390174
+#> 4     HLN 4.045785e-05 0.004246140
+#> 5     LHP 3.738960e-03 0.392412074
+#> 6     LHN 2.059903e-03 0.216191301
+#> 7     LLP 2.607734e-03 0.273687387
+#> 8     LLN 6.541859e-04 0.068658238
+#> 9   total 9.528148e-03 1.000000000
 ```

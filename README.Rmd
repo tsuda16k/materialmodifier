@@ -207,6 +207,20 @@ The first column of the figure shows the name of each effect, and the second col
 
 The figure contains a column called BS feature. The BS feature is an important term related to the image processing algorithm (briefly, the image area to be manipulated, extracted from the input image based on a certain criterion). The algorithm achieves image editing effects by decreasing or increasing the weight of the BS feature in the input image. 
 
+Since terms such as ```shine``` and ```aging``` are aliases for BS features, each effect can also be applied using the name of the BS features as follows.
+
+```{r, eval=FALSE, echo=TRUE}
+# im1 and im2 are identical
+im1 = modif(face, "shine", 3)
+im2 = modif(face, "HHP", 3)
+
+# im3 and im4 are identical
+im3 = modif(face, "aging", 3)
+im4 = modif(face, c("HLA", "HHN"), 3)
+```
+
+Note that the ```aging``` effect is an effect that edits two BS features, HLA and HHN, so two BS feature names are specified above.
+
 ## Summary of image processing results with different strength values for each effect
 
 To better understand the nature of each image editing effect, it is helpful to compare the results of all editing effects on a single image. The figure below summarizes the results of the editing effects on a face and a food image (note that the image in the row with a strength value of 1 is the input image). By comparing the images in the rows with large values of the strength parameter, it is easier to see the characteristics of each effect.

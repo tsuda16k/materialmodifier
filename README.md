@@ -408,11 +408,11 @@ notice that the appearance of the skin area is slightly different
 between the two. This is because by using a mask, only the pixels within
 the mask region are used to calculate the image features that should be
 edited.  
-(This method uses the distribution of brightness values in the input
-image to extract each BS feature. The distribution (variance) of
-brightness values changes as only pixels within the masked region are
-included in the calculation, thereby changing the criteria for high and
-low amplitude, which in turn changes the BS features.)
+(The image processing algorithm uses the distribution of brightness
+values in the input image to extract each BS feature. The distribution
+(variance) of brightness values changes as only pixels within the masked
+region are included in the calculation, thereby changing the criteria
+for high and low amplitude, which in turn changes the BS features.)
 
 ## The modif2() function
 

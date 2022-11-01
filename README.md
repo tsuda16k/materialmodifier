@@ -592,3 +592,6 @@ get_BS_energy(face, mask)
 #> 8     LLN 6.541859e-04 0.068658238
 #> 9   total 9.528148e-03 1.000000000
 ```
+
+This is useful, for example, if you want to analyze only the skin area
+of a face image.

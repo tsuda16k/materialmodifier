@@ -435,3 +435,4 @@ mask = im_load("https://raw.githubusercontent.com/tsuda16k/materialmodifier/mast
 get_BS_energy(face, mask)
 ```
 
+This is useful, for example, if you want to analyze only the skin area of a face image.

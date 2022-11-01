@@ -1356,7 +1356,7 @@ get_BS_energy = function( im, mask = NA, logspace = TRUE ){
 #' Apply material editing effect
 #'
 #' This function is the core function of this package. It edits the input image by specifying
-#' thename of the editing effect (BS feature or its alias) and the strength parameter.
+#' the name of the editing effect (BS feature or its alias) and the strength parameter.
 #'
 #' @param im An input image.
 #' @param effect A string naming the effect to apply. Either "gloss", "shine", "spots", "blemish", "rough",

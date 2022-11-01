@@ -374,7 +374,7 @@ Because the modif() function is very slow for large-resolution images, it is use
 
 The ```log_epsilon``` and ```filter_epsilon``` are parameters that are used for image processing procedures. You need not change this value in most cases.
 
-The ```logspace``` parameter is TRUE by default, meaning that image processing is performed after log transforming the L component (L in Lab space) of the input image. If FALSE, no log transformation is performed. Without log transformation, the output image is prone to edge artifacts (areas of edges in the image tend to look unnatural ), so that it is recommended to use the default setting.
+The ```logspace``` parameter is TRUE by default, meaning that image processing is performed after log transforming the L component (L in Lab space) of the input image. If FALSE, no log transformation is performed. Without log transformation, the output image is prone to edge artifacts (areas of edges in the image tend to look unnatural), so that it is recommended to use the default setting.
 
 ### Parameters of the modif2() function
 

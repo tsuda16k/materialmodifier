@@ -47,7 +47,7 @@ an output image
 }
 \description{
 This function is the core function of this package. It edits the input image by specifying
-thename of the editing effect (BS feature or its alias) and the strength parameter.
+the name of the editing effect (BS feature or its alias) and the strength parameter.
 }
 \examples{
 \donttest{

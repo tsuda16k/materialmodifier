@@ -508,7 +508,7 @@ The `logspace` parameter is TRUE by default, meaning that image
 processing is performed after log transforming the L component (L in Lab
 space) of the input image. If FALSE, no log transformation is performed.
 Without log transformation, the output image is prone to edge artifacts
-(areas of edges in the image tend to look unnatural ), so that it is
+(areas of edges in the image tend to look unnatural), so that it is
 recommended to use the default setting.
 
 ### Parameters of the modif2() function

@@ -4,12 +4,15 @@
 \alias{get_BS_energy}
 \title{Calculate the BS feature energy}
 \usage{
-get_BS_energy(im, mask)
+get_BS_energy(im, mask = NA, logspace = TRUE)
 }
 \arguments{
 \item{im}{An image.}
 
-\item{mask}{(optional) An image used for mask.}
+\item{mask}{(optional) If set, only the area of white pixels in the mask image will be included in the calculation.}
+
+\item{logspace}{If TRUE (default), image processing is done in the log space. If FALSE,
+computation is performed without log transformation.}
 }
 \value{
 a data frame

@@ -4,10 +4,12 @@
 \alias{gf_decompose_parts}
 \title{Scale-space decomposition}
 \usage{
-gf_decompose_parts(dec)
+gf_decompose_parts(dec, mask = NA)
 }
 \arguments{
 \item{dec}{output of gf_decompose_scale function}
+
+\item{mask}{If set, only the area of white pixels in the mask image will be edited.}
 }
 \value{
 a list of images

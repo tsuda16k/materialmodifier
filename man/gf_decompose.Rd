@@ -4,14 +4,25 @@
 \alias{gf_decompose}
 \title{Scale-space decomposition by the guided filter}
 \usage{
-gf_decompose(im, log_epsilon = 1e-04, filter_epsilon = 0.01)
+gf_decompose(
+  im,
+  mask = NA,
+  log_epsilon = 1e-04,
+  filter_epsilon = 0.01,
+  logspace = TRUE
+)
 }
 \arguments{
 \item{im}{an image}
 
+\item{mask}{If set, only the area of white pixels in the mask image will be edited.}
+
 \item{log_epsilon}{offset for log transformation}
 
 \item{filter_epsilon}{epsilon parameter}
+
+\item{logspace}{If TRUE (default), image processing is done in the log space. If FALSE,
+computation is performed without log transformation.}
 }
 \value{
 a list of images

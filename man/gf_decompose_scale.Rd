@@ -8,7 +8,8 @@ gf_decompose_scale(
   im,
   depth = NULL,
   log_epsilon = 1e-04,
-  filter_epsilon = 0.01
+  filter_epsilon = 0.01,
+  logspace = TRUE
 )
 }
 \arguments{
@@ -19,6 +20,9 @@ gf_decompose_scale(
 \item{log_epsilon}{offset for log transformation}
 
 \item{filter_epsilon}{epsilon parameter}
+
+\item{logspace}{If TRUE (default), image processing is done in the log space. If FALSE,
+computation is performed without log transformation.}
 }
 \value{
 a list of images

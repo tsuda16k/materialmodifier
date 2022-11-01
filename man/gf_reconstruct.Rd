@@ -4,7 +4,7 @@
 \alias{gf_reconstruct}
 \title{Reconstruct the original image from decomposed data}
 \usage{
-gf_reconstruct(dec, scales, ind, include.residual = TRUE)
+gf_reconstruct(dec, scales, ind, include.residual = TRUE, logspace = TRUE)
 }
 \arguments{
 \item{dec}{decomposed data}
@@ -14,6 +14,9 @@ gf_reconstruct(dec, scales, ind, include.residual = TRUE)
 \item{ind}{a numeric vector}
 
 \item{include.residual}{either TRUE (default) or FALSE}
+
+\item{logspace}{If TRUE (default), image processing is done in the log space. If FALSE,
+computation is performed without log transformation.}
 }
 \value{
 an image

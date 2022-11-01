@@ -32,27 +32,21 @@ described in the article below:
 Tsuda and Kawabata (under review). materialmodifier: An R package of
 photo editing effects for material perception research.
 
+If you cite this R package, please also cite the following paper
+(because this technique is an R implementation of the algorithm proposed
+in the paper below).
+
+Boyadzhiev, I., Bala, K., Paris, S., & Adelson, E. (2015). Band-sifting
+decomposition for image-based material editing. ACM Transactions on
+Graphics, 34(5), 1–16. <https://doi.org/10.1145/2809796>
+
 ## Dependencies
 
 Mac users need to install XQuartz (<https://www.xquartz.org/>).
 
 ## Installation
 
-#### Installation via CRAN
-
-The package is available on CRAN. It can be installed with:
-
-``` r
-install.packages("materialmodifier")
-```
-
-Then, attach the package.
-
-``` r
-library(materialmodifier)
-```
-
-#### Installation via GitHub
+#### Installation via GitHub (recommended)
 
 You can install the development version of the `materialmodifier`
 package via GitHub, by using the `devtools` package.
@@ -75,6 +69,20 @@ package as follows:
 ``` r
 # install the materialmodifier package
 devtools::install_github("tsuda16k/materialmodifier")
+```
+
+Then, attach the package.
+
+``` r
+library(materialmodifier)
+```
+
+#### Installation via CRAN
+
+The package is available on CRAN. It can be installed with:
+
+``` r
+install.packages("materialmodifier")
 ```
 
 Then, attach the package.
@@ -322,6 +330,61 @@ Although you can get the same result by applying each effect in turn
 recommend doing them in a single line, because it saves time needed for
 image processing.
 
+## Edit only specific areas in an image using a mask image
+
+By using a mask image, you can edit only certain areas within an image,
+rather than the entire image. To use this feature, you need to prepare a
+mask image of the same size as the input image you wish to edit.
+
+The mask image is an image in which the area to be edited is white and
+the rest of the image is black. The mask image does not have to be a
+binary image; gray can be present (the intensity of the gray will be
+used to alpha blend the input image with the edited image).
+
+For example, the mask image representing the skin region of the face
+image in this package is as follows (Image on the right).
+
+<p>
+<img src="notes/face.jpg" width="40%">
+<img src="notes/mask.jpg" width="40%">
+</p>
+
+Specify a mask image for the `mask` argument of the `modif` function.
+
+``` r
+# load images
+im = im_load("https://raw.githubusercontent.com/tsuda16k/materialmodifier/master/notes/face.jpg")
+mask = im_load("https://raw.githubusercontent.com/tsuda16k/materialmodifier/master/notes/mask.jpg")
+
+# apply an effect
+im2 = modif(im, "HHP", 3) # no masking
+im3 = modif(im, "HHP", 3, mask) # with a mask image
+
+# see the results
+plot(im)
+plot(im2)
+plot(im3)
+```
+
+<p>
+<img src="notes/face.jpg" width="32%">
+<img src="notes/face_nomask_shine3.png" width="32%">
+<img src="notes/face_mask_shine3.png" width="32%"><br> Left: input
+image, Center: edited without mask, Right: edited with mask
+</p>
+
+An example of the HHP(shine) effect applied to the face image is shown
+above. When editing without using a mask, the entire image is edited, so
+the hair is shined as well as the skin. On the other hand, when editing
+with a mask image that specifies the skin area, only the skin area is
+changed, while the other areas remain the same as in the input image.
+
+If you observe the two images on the right in more detail, you will
+notice that the appearance of the skin area is slightly different
+between the two. This is because by using a mask, only the pixels within
+the mask region are used to calculate the image features that should be
+edited.
+
 ## The modif2() function
 
 The `modif2()` function allows for a precise control over which image
@@ -359,12 +422,25 @@ smooth  = list(feature = "HHN", strength = 0.2) # smoother
 plot(modif2(face, params = list(blemish, smooth)))
 ```
 
-## Parameters of the modif() function
-
-The `modif()` function has 6 arguments.
+As with the `modif` function, a mask image can be specified in the
+`modif2` function.
 
 ``` r
-modif(im, effect, strength, max_size = 1280, log_epsilon = 0.0001, filter_epsilon = 0.01)
+# apply an effect using a mask image
+im2 = modif2(face, params = list(feature = "HHP", strength = 3), mask)
+```
+
+## Summary
+
+The specifications of the `modif()` and `modif2()` functions are
+summarized below.
+
+### Parameters of the modif() function
+
+The `modif()` function has 8 arguments.
+
+``` r
+modif(im, effect, strength, mask = NA, max_size = 1280, log_epsilon = 0.0001, filter_epsilon = 0.01, logspace = TRUE)
 ```
 
 Table of arguments of the `modif()` function:
@@ -374,13 +450,17 @@ Table of arguments of the `modif()` function:
 | im              | Input image                            | an image object                                                                     |         |
 | effect          | Effect name                            | Either “gloss”, “shine”, “spots”, “blemish”, “rough”, “stain”, “shadow”, or “aging” |         |
 | strength        | Strength of effect                     | a float value or a float vector                                                     |         |
+| mask            | Mask image                             | an image object                                                                     | NA      |
 | max\_size       | Image resolution limit                 | an integer                                                                          | 1280    |
 | log\_epsilon    | Offset for log transformation          | a float value                                                                       | 0.0001  |
 | filter\_epsilon | Epsilon parameter of the Guided filter | a float value                                                                       | 0.01    |
+| logspace        | Log transformation flag                | a logical value                                                                     | TRUE    |
 
 The `im` is an image object we can get by using the `im_load()`
 function.  
-The `effect` and `strength` parameters have been described above.
+The `effect` and `strength` parameters have been described above.  
+The `mask` is an image object we can get by using the `im_load()`
+function.
 
 The `max_size` parameter can be used to restrict the image resolution.
 If the shorter side of the input image is larger than this value (the
@@ -395,23 +475,32 @@ The `log_epsilon` and `filter_epsilon` are parameters that are used for
 image processing procedures. You need not change this value in most
 cases.
 
-## Parameters of the modif2() function
+The `logspace` parameter is TRUE by default, meaning that image
+processing is performed after log transforming the L component (L in Lab
+space) of the input image. If FALSE, no log transformation is performed.
+Without log transformation, the output image is prone to edge artifacts
+(areas of edges in the image tend to look unnatural ), so that it is
+recommended to use the default setting.
 
-The `modif2()` function has 5 arguments.
+### Parameters of the modif2() function
+
+The `modif2()` function has 7 arguments.
 
 ``` r
-modif(im, params, max_size = 1280, log_epsilon = 0.0001, filter_epsilon = 0.01)
+modif(im, params, mask = NA, max_size = 1280, log_epsilon = 0.0001, filter_epsilon = 0.01, logspace = TRUE)
 ```
 
-Table of arguments of the `modif()` function:
+Table of arguments of the `modif2()` function:
 
 | Argument        | Meaning                                | Value           | Default |
 |:----------------|:---------------------------------------|:----------------|:--------|
 | im              | Input image                            | an image object |         |
 | params          | A list of parameter values             | a list          |         |
+| mask            | Mask image                             | an image object | NA      |
 | max\_size       | Image resolution limit                 | an integer      | 1280    |
 | log\_epsilon    | Offset for log transformation          | a float value   | 0.0001  |
 | filter\_epsilon | Epsilon parameter of the Guided filter | a float value   | 0.01    |
+| logspace        | Log transformation flag                | a logical value | TRUE    |
 
 For the `params` parameter, set a list of material editing parameters:
 
@@ -462,7 +551,26 @@ get_BS_energy(face)
 
 The output of the `get_BS_energy()` function is a data frame, which has
 the energy values of eight BS features (rows 1-8) and the total energy
-(sum of the above eight, row 9). In addition, it has the energy values
-of composite features (HLA, LAN, aging) of multiple BS features. The
-`normalized` column is obtained by dividing each energy value by the
-total energy value.
+(sum of the above eight, row 9). The `normalized` column is obtained by
+dividing each energy value by the total energy value.
+
+By specifying a mask image, only specific areas in the image can be
+targeted for calculation.
+
+``` r
+mask = im_load("https://raw.githubusercontent.com/tsuda16k/materialmodifier/master/notes/mask.jpg")
+get_BS_energy(face, mask)
+#>    feature       energy normalized
+#> 1      HHP 0.0001820414 0.01581275
+#> 2      HHN 0.0006511505 0.05656121
+#> 3      HLP 0.0002431093 0.02111732
+#> 4      HLN 0.0001337165 0.01161508
+#> 5      LHP 0.0014786798 0.12844329
+#> 6      LHN 0.0054231308 0.47107207
+#> 7      LLP 0.0028524325 0.24777225
+#> 8      LLN 0.0005480557 0.04760603
+#> 9    total 0.0115123164 1.00000000
+#> 10     HLA 0.0003247685 0.02821052
+#> 11     LAN 0.0068453860 0.59461413
+#> 12   aging 0.0010850698 0.09425295
+```

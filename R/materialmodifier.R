@@ -907,6 +907,14 @@ im_raise = function( im, intercept ){
 }
 
 
+im_blend = function( im, im2, alpha ){
+  if( missing( alpha ) ){
+    alpha = get_A( im ) # 0 = background, 1 = object
+  }
+  im3 = ( 1 - im_tricolored( alpha ) ) * im_tricolored( im2 ) + im_tricolored( alpha ) * im_tricolored( im )
+  return( im3 )
+}
+
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # luminance ----
 
@@ -1076,25 +1084,27 @@ visualize_contrast = function( im, abs.range = NULL, Lcenter = 55 ){
 
 #' Scale-space decomposition by the guided filter
 #' @param im an image
+#' @param mask If set, only the area of white pixels in the mask image will be edited.
 #' @param log_epsilon offset for log transformation
 #' @param filter_epsilon epsilon parameter
+#' @param logspace If TRUE (default), image processing is done in the log space. If FALSE,
+#' computation is performed without log transformation.
 #' @return a list of images
-gf_decompose = function( im, log_epsilon = 0.0001, filter_epsilon = 0.01 ){
+gf_decompose = function( im, mask = NA, log_epsilon = 0.0001, filter_epsilon = 0.01, logspace = TRUE ){
   if( im_nc( im ) == 2 || im_nc( im ) > 3 ){
     warning( "The number of color channel must be either 1 or 3.")
     return( NULL )
   }
   if( im_nc( im ) == 3 ){
     lab = sRGB2Lab( im )
-    dec = gf_decompose( get_channel( lab, 1 ) / 100 )
+    dec = gf_decompose( get_channel( lab, 1 ) / 100, mask,log_epsilon, filter_epsilon, logspace  )
     dec = c( dec, list( a = get_channel( lab, 2 ), b = get_channel( lab, 3 ) ) )
     dec$n.color = 3
     return( dec )
   }
 
-  dec = gf_decompose_scale( im, NULL, log_epsilon, filter_epsilon )
-  dec = gf_decompose_parts( dec )
-
+  dec = gf_decompose_scale( im, NULL, log_epsilon, filter_epsilon, logspace )
+  dec = gf_decompose_parts( dec, mask )
 
   return( dec )
 }
@@ -1105,14 +1115,19 @@ gf_decompose = function( im, log_epsilon = 0.0001, filter_epsilon = 0.01 ){
 #' @param depth scale depth
 #' @param log_epsilon offset for log transformation
 #' @param filter_epsilon epsilon parameter
+#' @param logspace If TRUE (default), image processing is done in the log space. If FALSE,
+#' computation is performed without log transformation.
 #' @return a list of images
-gf_decompose_scale = function( im, depth = NULL, log_epsilon = 0.0001, filter_epsilon = 0.01 ){
+gf_decompose_scale = function( im, depth = NULL, log_epsilon = 0.0001, filter_epsilon = 0.01, logspace = TRUE ){
   im = get_L( im )
   if( is.null( depth ) ){
     depth = floor( log2( min( im_size( im ) ) ) ) - 1
   }
-  L = log( im + log_epsilon )
-
+  if( logspace ){
+    L = log( im + log_epsilon )
+  } else {
+    L = im
+  }
   if( depth == 0 ) {
     N = 0
     D = list( residual = L )
@@ -1158,8 +1173,9 @@ gf_decompose_scale = function( im, depth = NULL, log_epsilon = 0.0001, filter_ep
 
 #' Scale-space decomposition
 #' @param dec output of gf_decompose_scale function
+#' @param mask If set, only the area of white pixels in the mask image will be edited.
 #' @return a list of images
-gf_decompose_parts = function( dec ){
+gf_decompose_parts = function( dec, mask = NA ){
   L = dec$L
   residual = L$residual
   L$residual = NULL
@@ -1167,7 +1183,11 @@ gf_decompose_parts = function( dec ){
     blur_range = 0.2
     range_lo = 1 - blur_range
     range_hi = 1 + blur_range
-    sigma = stats::sd( im )
+    if( is.nimg( mask ) ){
+      sigma = stats::sd( im[ mask > 0.5 ] )
+    } else {
+      sigma = stats::sd( im )
+    }
     hi =
       im * cubic_spline( im, range_lo * sigma, range_hi * sigma ) +
       im * cubic_spline( im, -range_lo * sigma, -range_hi * sigma )
@@ -1223,8 +1243,10 @@ gf_get_residual = function( im, Depth, log_epsilon = 0.0001, filter_epsilon = 0.
 #' @param scales which spatial scales to use for reconstruction
 #' @param ind a numeric vector
 #' @param include.residual either TRUE (default) or FALSE
+#' @param logspace If TRUE (default), image processing is done in the log space. If FALSE,
+#' computation is performed without log transformation.
 #' @return an image
-gf_reconstruct = function( dec, scales, ind, include.residual = TRUE ){
+gf_reconstruct = function( dec, scales, ind, include.residual = TRUE, logspace = TRUE ){
   if( base::missing( scales ) ){
     scales = 1:dec$depth
   }
@@ -1249,7 +1271,9 @@ gf_reconstruct = function( dec, scales, ind, include.residual = TRUE ){
   if( include.residual ){
     recon = recon + dec$L$residual
   }
-  recon = exp( recon ) - dec$log_epsilon
+  if( logspace ){
+    recon = exp( recon ) - dec$log_epsilon
+  }
 
   if( dec$n.color == 3 ){
     recon = Lab2sRGB( merge_color( list( recon * 100, dec$a, dec$b ) ) )
@@ -1262,12 +1286,14 @@ gf_reconstruct = function( dec, scales, ind, include.residual = TRUE ){
 #' Calculate the BS feature energy
 #'
 #' @param im An image.
-#' @param mask (optional) An image used for mask.
+#' @param mask (optional) If set, only the area of white pixels in the mask image will be included in the calculation.
+#' @param logspace If TRUE (default), image processing is done in the log space. If FALSE,
+#' computation is performed without log transformation.
 #' @return a data frame
 #' @examples
 #' data = get_BS_energy(face)
 #' @export
-get_BS_energy = function( im, mask ){
+get_BS_energy = function( im, mask = NA, logspace = TRUE ){
   if( ! missing( mask ) ){
     if( ! is.logical( mask ) ){
       mask = as.logical( im_threshold( im_gray( mask ), "auto" ) )
@@ -1275,7 +1301,7 @@ get_BS_energy = function( im, mask ){
   }
 
   # Image decomposition by the Band-Sift algorithm
-  dec = gf_decompose( im )
+  dec = gf_decompose( im, mask, logspace )
 
   # BS feature maps
   maps = list( HHP = dec$L$D1$highamp_posi,
@@ -1299,13 +1325,13 @@ get_BS_energy = function( im, mask ){
       maps$LLN = maps$LLN + dec$L[[ i ]]$lowamp_nega
     }
   }
-  maps$HLA = maps$HLP + maps$HLN
-  maps$LAN = maps$LHN + maps$LLN
-  maps$aging = maps$HLA + maps$HHN
+  # maps$HLA = maps$HLP + maps$HLN
+  # maps$LAN = maps$LHN + maps$LLN
+  # maps$aging = maps$HLA + maps$HHN
 
   # energy calculation
-  energy = rep( -1, 11 )
-  for( i in 1:11 ){
+  energy = rep( -1, 8 )
+  for( i in 1:8 ){
     D = maps[[ i ]]
     if( ! missing( mask ) ){
       D = D[ mask ]
@@ -1315,8 +1341,10 @@ get_BS_energy = function( im, mask ){
   total_energy = sum( energy[ 1:8 ] )
 
   df = data.frame(
-    feature = c( names( maps )[ 1:8 ], "total", names( maps )[ 9:11 ]),
-    energy = c( energy[ 1:8 ], total_energy, energy[ 9:11 ])
+    # feature = c( names( maps )[ 1:8 ], "total", names( maps )[ 9:11 ]),
+    # energy = c( energy[ 1:8 ], total_energy, energy[ 9:11 ])
+    feature = c( names( maps )[ 1:8 ], "total" ),
+    energy = c( energy[ 1:8 ], total_energy)
   )
   df$normalized = df$energy / df$energy[ 9 ]
 
@@ -1327,12 +1355,16 @@ get_BS_energy = function( im, mask ){
 
 #' Apply material editing effect
 #'
+#' This function is the core function of this package. It edits the input image by specifying
+#' thename of the editing effect (BS feature or its alias) and the strength parameter.
+#'
 #' @param im An input image.
 #' @param effect A string naming the effect to apply. Either "gloss", "shine", "spots", "blemish", "rough",
 #' "stain", "shadow", or "aging".
 #' @param strength A numeric, which controls the strength of the effect. Strength values between 0 and 1 will
 #' reduce a feature, while strength values larger than 1 will boost a feature. A strength value of 1 does nothing.
 #' Negative values are allowed, which will invert a feature.
+#' @param mask If set, only the area of white pixels in the mask image will be edited.
 #' @param max_size If the shorter side of the input image is larger than this value (the default is 1280),
 #' input image is resized before applying effects. Because the modif() function is very slow for large-resolution
 #' images, it is useful to limit the image resolution to speed-up the image processing.
@@ -1342,6 +1374,8 @@ get_BS_energy = function( im, mask ){
 #' Need not to change this value in most cases.
 #' @param filter_epsilon Epsilon parameter of the Guided filter (default is 0.01).
 #' Need not to change this value in most cases.
+#' @param logspace If TRUE (default), image processing is done in the log space. If FALSE,
+#' computation is performed without log transformation.
 #' @return an output image
 #' @examples
 #' \donttest{
@@ -1350,7 +1384,7 @@ get_BS_energy = function( im, mask ){
 #' plot(modif(face, effect = c("shine", "stain"), strength = c(0.2, 3))) # Less shiny and more stain
 #' }
 #' @export
-modif = function( im, effect, strength, max_size = 1280, log_epsilon = 0.0001, filter_epsilon = 0.01 ){
+modif = function( im, effect, strength, mask = NA, max_size = 1280, log_epsilon = 0.0001, filter_epsilon = 0.01, logspace = TRUE ){
   effect = modif_BSNameToEffectName( effect )
   is_invalid_name = ! effect %in% c( "gloss", "shine", "spots", "blemish", "rough", "stain", "shadow", "aging" )
   if( any( is_invalid_name ) ){
@@ -1367,33 +1401,43 @@ modif = function( im, effect, strength, max_size = 1280, log_epsilon = 0.0001, f
   if( ! is.na( max_size ) ){
     im = im_resize_limit_min( im, max_size )
   }
+  if( is.nimg( mask ) ){
+    mask = im_gray( mask ) %>% clamping()
+  }
 
   if( im_nc( im ) == 3 ){
     lab = sRGB2Lab( im )
-    bs = modif( get_channel( lab, 1 ) / 100, effect, strength, max_size, log_epsilon, filter_epsilon )
+    bs = modif( get_channel( lab, 1 ) / 100, effect, strength, mask, max_size, log_epsilon, filter_epsilon, logspace )
     return( clamping( Lab2sRGB( merge_color( list( bs * 100, get_G( lab ), get_B( lab ) ) ) ) ) )
   } else {
-    dec = gf_decompose( get_L( im ), log_epsilon, filter_epsilon )
+    dec = gf_decompose( get_L( im ), mask, log_epsilon, filter_epsilon, logspace )
   }
 
   params = modif_set_params( effect, strength, dec$depth )
-  dec = modif_edit_dec( dec, params )
-  rec = clamping( gf_reconstruct( dec ) )
+  dec = modif_edit_dec( dec, params, mask )
+  rec = clamping( gf_reconstruct( dec, logspace = logspace ) )
 
   return( rec )
 }
 
 
-#' Apply material editing effect
+#' Apply material editing effect (For advanced users)
+#'
+#' This function allows you to specify which image components to edit in more detail than
+#' the modif function. Please refer to the information on the package's Github page for
+#' detailed usage and theoretical background.
 #'
 #' @param im An input image.
 #' @param params A list of parameter values. Parameter names are freq, amp, sign, and strength.
+#' @param mask If set, only the area of white pixels in the mask image will be edited.
 #' @param max_size If the shorter side of the input image is larger than this value (the default is 1280),
 #' input image is resized. The modif function is very slow for large-resolution images.
 #' @param log_epsilon Offset for log transformation (default is 0.0001).
 #' Need not to change this value in most cases.
 #' @param filter_epsilon Epsilon parameter of the Guided filter (default is 0.01).
 #' Need not to change this value in most cases.
+#' @param logspace If TRUE (default), image processing is done in the log space. If FALSE,
+#' computation is performed without log transformation.
 #' @return an output image
 #' @examples
 #' \donttest{
@@ -1415,23 +1459,26 @@ modif = function( im, effect, strength, max_size = 1280, log_epsilon = 0.0001, f
 #' plot(modif2(face, params = list(blemish, smooth)))
 #' }
 #' @export
-modif2 = function( im, params, max_size = 1280, log_epsilon = 0.0001, filter_epsilon = 0.01 ){
+modif2 = function( im, params, mask = NA, max_size = 1280, log_epsilon = 0.0001, filter_epsilon = 0.01, logspace = TRUE ){
   if( ! is.na( max_size ) ){
     im = im_resize_limit_min( im, max_size )
   }
 
+  if( is.nimg( mask ) ){
+    mask = im_gray( mask ) %>% clamping()
+  }
 
   if( im_nc( im ) == 3 ){
     lab = sRGB2Lab( im )
-    bs = modif2( get_channel( lab, 1 ) / 100, params, max_size, log_epsilon, filter_epsilon )
+    bs = modif2( get_channel( lab, 1 ) / 100, params, mask, max_size, log_epsilon, filter_epsilon, logspace )
     return( clamping( Lab2sRGB( merge_color( list( bs * 100, get_G( lab ), get_B( lab ) ) ) ) ) )
   } else {
-    dec = gf_decompose( get_L( im ), log_epsilon, filter_epsilon )
+    dec = gf_decompose( get_L( im ), mask, log_epsilon, filter_epsilon, logspace )
   }
 
   params = modif_set_custom_params( params, dec$depth )
-  dec = modif_edit_dec( dec, params )
-  rec = clamping( gf_reconstruct( dec ) )
+  dec = modif_edit_dec( dec, params, mask )
+  rec = clamping( gf_reconstruct( dec, logspace = logspace ) )
 
   return( rec )
 }
@@ -1590,11 +1637,17 @@ modif_set_custom_params = function( params, depth ){
 }
 
 
-modif_edit_dec = function( dec, params ){
+modif_edit_dec = function( dec, params, mask ){
   for( p in 1:length( params ) ){
     for( f in params[[ p ]]$freq_num ){
       for( i in params[[ p ]]$ind ){
-        dec$L[[ f ]][[ i ]] = dec$L[[ f ]][[ i ]] * params[[ p ]]$strength
+        if( is.nimg( mask ) ){
+          foreground = dec$L[[ f ]][[ i ]] * params[[ p ]]$strength
+          background = dec$L[[ f ]][[ i ]]
+          dec$L[[ f ]][[ i ]] = mask * foreground + ( 1 - mask ) * background
+        } else {
+          dec$L[[ f ]][[ i ]] = dec$L[[ f ]][[ i ]] * params[[ p ]]$strength
+        }
       }
     }
   }

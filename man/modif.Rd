@@ -8,9 +8,11 @@ modif(
   im,
   effect,
   strength,
+  mask = NA,
   max_size = 1280,
   log_epsilon = 1e-04,
-  filter_epsilon = 0.01
+  filter_epsilon = 0.01,
+  logspace = TRUE
 )
 }
 \arguments{
@@ -23,6 +25,8 @@ modif(
 reduce a feature, while strength values larger than 1 will boost a feature. A strength value of 1 does nothing.
 Negative values are allowed, which will invert a feature.}
 
+\item{mask}{If set, only the area of white pixels in the mask image will be edited.}
+
 \item{max_size}{If the shorter side of the input image is larger than this value (the default is 1280),
 input image is resized before applying effects. Because the modif() function is very slow for large-resolution
 images, it is useful to limit the image resolution to speed-up the image processing.
@@ -34,12 +38,16 @@ Need not to change this value in most cases.}
 
 \item{filter_epsilon}{Epsilon parameter of the Guided filter (default is 0.01).
 Need not to change this value in most cases.}
+
+\item{logspace}{If TRUE (default), image processing is done in the log space. If FALSE,
+computation is performed without log transformation.}
 }
 \value{
 an output image
 }
 \description{
-Apply material editing effect
+This function is the core function of this package. It edits the input image by specifying
+thename of the editing effect (BS feature or its alias) and the strength parameter.
 }
 \examples{
 \donttest{

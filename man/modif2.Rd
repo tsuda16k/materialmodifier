@@ -2,14 +2,24 @@
 % Please edit documentation in R/materialmodifier.R
 \name{modif2}
 \alias{modif2}
-\title{Apply material editing effect}
+\title{Apply material editing effect (For advanced users)}
 \usage{
-modif2(im, params, max_size = 1280, log_epsilon = 1e-04, filter_epsilon = 0.01)
+modif2(
+  im,
+  params,
+  mask = NA,
+  max_size = 1280,
+  log_epsilon = 1e-04,
+  filter_epsilon = 0.01,
+  logspace = TRUE
+)
 }
 \arguments{
 \item{im}{An input image.}
 
 \item{params}{A list of parameter values. Parameter names are freq, amp, sign, and strength.}
+
+\item{mask}{If set, only the area of white pixels in the mask image will be edited.}
 
 \item{max_size}{If the shorter side of the input image is larger than this value (the default is 1280),
 input image is resized. The modif function is very slow for large-resolution images.}
@@ -19,12 +29,17 @@ Need not to change this value in most cases.}
 
 \item{filter_epsilon}{Epsilon parameter of the Guided filter (default is 0.01).
 Need not to change this value in most cases.}
+
+\item{logspace}{If TRUE (default), image processing is done in the log space. If FALSE,
+computation is performed without log transformation.}
 }
 \value{
 an output image
 }
 \description{
-Apply material editing effect
+This function allows you to specify which image components to edit in more detail than
+the modif function. Please refer to the information on the package's Github page for
+detailed usage and theoretical background.
 }
 \examples{
 \donttest{

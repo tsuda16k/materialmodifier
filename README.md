@@ -46,7 +46,14 @@ Mac users need to install XQuartz (<https://www.xquartz.org/>).
 
 ## Installation
 
-#### Installation via GitHub (recommended)
+There are two ways to install the package: 1. via GitHub, 2. via CRAN.
+
+#### 1. Installation via GitHub (recommended)
+
+(The reason for recommending installation via GitHub is that if a
+version of the package is updated by adding new features or removing
+bugs, installing from GitHub will allow you to use that latest version.
+There can be a time lag of several weeks before CRAN data is updated.)
 
 You can install the development version of the `materialmodifier`
 package via GitHub, by using the `devtools` package.
@@ -77,7 +84,7 @@ Then, attach the package.
 library(materialmodifier)
 ```
 
-#### Installation via CRAN
+#### 2. Installation via CRAN
 
 The package is available on CRAN. It can be installed with:
 

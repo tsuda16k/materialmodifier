@@ -26,19 +26,20 @@ photo editing effects by simply calling on a single R function.
 
 ## Paper
 
-Details of this package (background, algorithm, usage, etc.) will be
+Details of this package (background, algorithm, usage, etc.) is
 described in the article below:
 
-Tsuda and Kawabata (under review). materialmodifier: An R package of
-photo editing effects for material perception research.
+Tsuda and Kawabata (2023). materialmodifier: An R package of photo
+editing effects for material perception research. <i>Behavior Research
+Methods</i>. <https://doi.org/10.3758/s13428-023-02116-2>
 
 If you cite this R package, please also cite the following paper
 (because this technique is an R implementation of the algorithm proposed
 in the paper below).
 
 Boyadzhiev, I., Bala, K., Paris, S., & Adelson, E. (2015). Band-sifting
-decomposition for image-based material editing. ACM Transactions on
-Graphics, 34(5), 1–16. <https://doi.org/10.1145/2809796>
+decomposition for image-based material editing. <i>ACM Transactions on
+Graphics, 34</i>(5), 1–16. <https://doi.org/10.1145/2809796>
 
 ## Dependencies
 
@@ -84,7 +85,12 @@ Then, attach the package.
 library(materialmodifier)
 ```
 
-#### 2. Installation via CRAN
+#### 2. Installation via CRAN (currently not recommended)
+
+(I do not recommend installing via CRAN because the package available on
+CRAN is not the latest version and lacks certain features. Although the
+package version will be updated soon, I suggest installing it via GitHub
+in the meantime.)
 
 The package is available on CRAN. It can be installed with:
 

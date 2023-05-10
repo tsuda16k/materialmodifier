@@ -31,7 +31,8 @@ described in the article below:
 
 Tsuda and Kawabata (2023). materialmodifier: An R package of photo
 editing effects for material perception research. <i>Behavior Research
-Methods</i>. <https://doi.org/10.3758/s13428-023-02116-2>
+Methods</i>.
+<https://link.springer.com/article/10.3758/s13428-023-02116-2>
 
 If you cite this R package, please also cite the following paper
 (because this technique is an R implementation of the algorithm proposed

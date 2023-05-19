@@ -21,5 +21,7 @@ a data frame
 Calculate the BS feature energy
 }
 \examples{
+\dontrun{
 data = get_BS_energy(face)
+}
 }

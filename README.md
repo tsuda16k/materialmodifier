@@ -5,9 +5,9 @@
 
 <!-- badges: start -->
 
-[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/materialmodifier)](https://cran.r-project.org/package=materialmodifier)
-[![CRAN\_time\_from\_release](https://www.r-pkg.org/badges/ago/materialmodifier)](https://cran.r-project.org/package=materialmodifier)
-[![CRAN\_latest\_release\_date](https://www.r-pkg.org/badges/last-release/materialmodifier)](https://cran.r-project.org/package=materialmodifier)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/materialmodifier)](https://cran.r-project.org/package=materialmodifier)
+[![CRAN_time_from_release](https://www.r-pkg.org/badges/ago/materialmodifier)](https://cran.r-project.org/package=materialmodifier)
+[![CRAN_latest_release_date](https://www.r-pkg.org/badges/last-release/materialmodifier)](https://cran.r-project.org/package=materialmodifier)
 [![metacran
 downloads](https://cranlogs.r-pkg.org/badges/grand-total/materialmodifier)](https://cran.r-project.org/package=materialmodifier)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://choosealicense.com/licenses/mit/)
@@ -21,7 +21,7 @@ on image processing techniques, the user can automatically perform such
 photo editing effects by simply calling on a single R function.
 
 <p>
-<img src="notes/examples_demo.jpg" width="100%">
+<img src="notes/examples_demo.jpg" width="100%" alt="demo">
 </p>
 
 ## Paper
@@ -135,7 +135,7 @@ To plot an image, use the `plot()` function.
 plot(face)
 ```
 
-<img src="notes/face.jpg" width="40%">
+<img src="notes/face.jpg" width="40%" alt="face">
 
 ## Load an image
 
@@ -157,7 +157,7 @@ plot(im)
 
 will load an image of roasted meat.
 
-<img src="notes/meat.png" width="40%">
+<img src="notes/meat.png" width="40%" alt="meat">
 
 ## Apply material editing effects
 
@@ -182,8 +182,8 @@ plot(im2) # see the result
 ```
 
 <p>
-<img src="notes/face.jpg" width="40%">
-<img src="notes/face_shine30.jpg" width="40%">
+<img src="notes/face.jpg" width="40%" alt="face">
+<img src="notes/face_shine30.jpg" width="40%" alt="face">
 </p>
 
 On the left is the input image, and on the right is the result of the
@@ -194,7 +194,7 @@ processing effect. A larger value of `strength` will produce a stronger
 effect:
 
 <p>
-<img src="notes/face_shine01.jpg" width="20%"><img src="notes/face.jpg" width="20%"><img src="notes/face_shine20.jpg" width="20%"><img src="notes/face_shine30.jpg" width="20%"><img src="notes/face_shine40.jpg" width="20%">
+<img src="notes/face_shine01.jpg" width="20%" alt="face"><img src="notes/face.jpg" width="20%" alt="face"><img src="notes/face_shine20.jpg" width="20%" alt="face"><img src="notes/face_shine30.jpg" width="20%" alt="face"><img src="notes/face_shine40.jpg" width="20%" alt="face">
 </p>
 
 The `strength` parameters, from left to right, are 0.1, 1, 2, 3, and 4.
@@ -223,9 +223,9 @@ plot(im3)
 ```
 
 <p>
-<img src="notes/face_aging01.jpg" width="30%">
-<img src="notes/face.jpg" width="30%">
-<img src="notes/face_aging25.jpg" width="30%">
+<img src="notes/face_aging01.jpg" width="30%" alt="face">
+<img src="notes/face.jpg" width="30%" alt="face">
+<img src="notes/face_aging25.jpg" width="30%" alt="face">
 </p>
 
 Compared to the original (center), skin blemishes are reduced on the
@@ -234,7 +234,7 @@ left and boosted on the right.
 The figure below summarizes outputs of the shine and aging effects.
 
 <p>
-<img src="notes/examples_functionality.jpg" width="100%">
+<img src="notes/examples_functionality.jpg" width="100%" alt="functionality">
 </p>
 
 ## The strength parameter
@@ -246,7 +246,7 @@ increases the stains/blemishes occurs; if it is less than 1, a reducing
 effect that decreases the stains/blemishes occurs.
 
 <p>
-<img src="notes/examples_strength.jpg" width="100%">
+<img src="notes/examples_strength.jpg" width="100%" alt="strength">
 </p>
 
 To get a boosting effect, a strength value of 2 to 6 usually yields
@@ -262,7 +262,7 @@ blemish, shadow, aging. A visual summary of these effects is shown in
 the figure below.
 
 <p>
-<img src="notes/examples_list.jpg" width="100%">
+<img src="notes/examples_list.jpg" width="100%" alt="list">
 </p>
 
 The first column of the figure shows the name of each effect, and the
@@ -304,7 +304,7 @@ values of the strength parameter, it is easier to see the
 characteristics of each effect.
 
 <p>
-<img src="notes/examples_list2.jpg" width="100%">
+<img src="notes/examples_list2.jpg" width="100%" alt="list">
 </p>
 
 Setting a negative value for the strength parameter often results in an
@@ -334,7 +334,7 @@ plot(im2)
 ```
 
 <p>
-<img src="notes/face_shine_aging.jpg" width="30%">
+<img src="notes/face_shine_aging.jpg" width="30%" alt="face">
 </p>
 
 The above command simultaneously applies a shine effect of strength =
@@ -376,8 +376,8 @@ For example, the mask image representing the skin region of the face
 image in this package is as follows (Image on the right).
 
 <p>
-<img src="notes/face.jpg" width="40%">
-<img src="notes/mask.jpg" width="40%">
+<img src="notes/face.jpg" width="40%" alt="face">
+<img src="notes/mask.jpg" width="40%" alt="face">
 </p>
 
 Specify a mask image for the `mask` argument of the `modif` function.
@@ -398,10 +398,10 @@ plot(im3)
 ```
 
 <p>
-<img src="notes/face.jpg" width="32%">
-<img src="notes/face_nomask_shine3.png" width="32%">
-<img src="notes/face_mask_shine3.png" width="32%"><br> Left: input
-image, Center: edited without mask, Right: edited with mask
+<img src="notes/face.jpg" width="32%" alt="face">
+<img src="notes/face_nomask_shine3.png" width="32%" alt="face">
+<img src="notes/face_mask_shine3.png" width="32%" alt="face"><br> Left:
+input image, Center: edited without mask, Right: edited with mask
 </p>
 
 An example of the HHP(shine) effect applied to the face image is shown
@@ -481,16 +481,16 @@ modif(im, effect, strength, mask = NA, max_size = 1280, log_epsilon = 0.0001, fi
 
 Table of arguments of the `modif()` function:
 
-| Argument        | Meaning                                | Value                                                                               | Default |
-|:----------------|:---------------------------------------|:------------------------------------------------------------------------------------|:--------|
-| im              | Input image                            | an image object                                                                     |         |
-| effect          | Effect name                            | Either “gloss”, “shine”, “spots”, “blemish”, “rough”, “stain”, “shadow”, or “aging” |         |
-| strength        | Strength of effect                     | a float value or a float vector                                                     |         |
-| mask            | Mask image                             | an image object                                                                     | NA      |
-| max\_size       | Image resolution limit                 | an integer                                                                          | 1280    |
-| log\_epsilon    | Offset for log transformation          | a float value                                                                       | 0.0001  |
-| filter\_epsilon | Epsilon parameter of the Guided filter | a float value                                                                       | 0.01    |
-| logspace        | Log transformation flag                | a logical value                                                                     | TRUE    |
+| Argument       | Meaning                                | Value                                                                               | Default |
+|:---------------|:---------------------------------------|:------------------------------------------------------------------------------------|:--------|
+| im             | Input image                            | an image object                                                                     |         |
+| effect         | Effect name                            | Either “gloss”, “shine”, “spots”, “blemish”, “rough”, “stain”, “shadow”, or “aging” |         |
+| strength       | Strength of effect                     | a float value or a float vector                                                     |         |
+| mask           | Mask image                             | an image object                                                                     | NA      |
+| max_size       | Image resolution limit                 | an integer                                                                          | 1280    |
+| log_epsilon    | Offset for log transformation          | a float value                                                                       | 0.0001  |
+| filter_epsilon | Epsilon parameter of the Guided filter | a float value                                                                       | 0.01    |
+| logspace       | Log transformation flag                | a logical value                                                                     | TRUE    |
 
 The `im` is an image object we can get by using the `im_load()`
 function.  
@@ -528,15 +528,15 @@ modif(im, params, mask = NA, max_size = 1280, log_epsilon = 0.0001, filter_epsil
 
 Table of arguments of the `modif2()` function:
 
-| Argument        | Meaning                                | Value           | Default |
-|:----------------|:---------------------------------------|:----------------|:--------|
-| im              | Input image                            | an image object |         |
-| params          | A list of parameter values             | a list          |         |
-| mask            | Mask image                             | an image object | NA      |
-| max\_size       | Image resolution limit                 | an integer      | 1280    |
-| log\_epsilon    | Offset for log transformation          | a float value   | 0.0001  |
-| filter\_epsilon | Epsilon parameter of the Guided filter | a float value   | 0.01    |
-| logspace        | Log transformation flag                | a logical value | TRUE    |
+| Argument       | Meaning                                | Value           | Default |
+|:---------------|:---------------------------------------|:----------------|:--------|
+| im             | Input image                            | an image object |         |
+| params         | A list of parameter values             | a list          |         |
+| mask           | Mask image                             | an image object | NA      |
+| max_size       | Image resolution limit                 | an integer      | 1280    |
+| log_epsilon    | Offset for log transformation          | a float value   | 0.0001  |
+| filter_epsilon | Epsilon parameter of the Guided filter | a float value   | 0.01    |
+| logspace       | Log transformation flag                | a logical value | TRUE    |
 
 For the `params` parameter, set a list of material editing parameters:
 

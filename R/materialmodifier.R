@@ -174,11 +174,11 @@ get_image_name_from_file = function( file ){
 #' @examples
 #' \dontrun{
 #' # face.png is saved to a path (if a path is specified)
-#' im_save( face, path = NULL )
+#' im_save( face, path = "yourpath" )
 #' # img.png is saved to a path (if a path is specified)
-#' im_save( face, name = "img", path = NULL )
+#' im_save( face, name = "img", path = "yourpath" )
 #' # myimage.jpg is saved to a path (if a path is specified)
-#' im_save( face, name = "myimage", path = NULL, format = "jpg" )
+#' im_save( face, name = "myimage", path = "yourpath", format = "jpg" )
 #' }
 #' @export
 im_save = function( im, name, path, format = "png", quality = .95 ){
@@ -1291,7 +1291,9 @@ gf_reconstruct = function( dec, scales, ind, include.residual = TRUE, logspace =
 #' computation is performed without log transformation.
 #' @return a data frame
 #' @examples
+#' \dontrun{
 #' data = get_BS_energy(face)
+#' }
 #' @export
 get_BS_energy = function( im, mask = NA, logspace = TRUE ){
   if( ! missing( mask ) ){
@@ -1581,7 +1583,7 @@ modif_set_params = function( effects, strength, depth ){
 
 
 modif_set_custom_params = function( params, depth ){
-  if( ! class( params[[ 1 ]] ) == "list" ){
+  if( ! inherits( params[[ 1 ]], "list" ) ){
     params = list( params )
   }
   for( i in 1:length( params ) ){

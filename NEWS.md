@@ -1,6 +1,7 @@
 # materialmodifier 1.2.0
 
 * Masking function was added to modif and modif2 functions
+* bug fixes
 
 # materialmodifier 1.1.0
 

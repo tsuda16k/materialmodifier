@@ -26,7 +26,7 @@ knitr::opts_chunk$set(
 
 The figure below shows what can be done with this package. The user can modify the appearance of objects in photographs. For example, they can make human skin smoother or, conversely, make blemishes more visible. They can also enhance the gloss of fruit or make it look wilted. Based on image processing techniques, the user can automatically perform such photo editing effects by simply calling on a single R function.
 
-<p><img src="notes/examples_demo.jpg" width="100%"></p>
+<p><img src="notes/examples_demo.jpg" width="100%" alt="demo"></p>
 
 ## Paper
 
@@ -113,7 +113,7 @@ To plot an image, use the ```plot()``` function.
 plot(face)
 ```
 
-<img src="notes/face.jpg" width="40%">
+<img src="notes/face.jpg" width="40%" alt="face">
 
 ## Load an image
 
@@ -135,7 +135,7 @@ plot(im)
 
 will load an image of roasted meat.
 
-<img src="notes/meat.png" width="40%">
+<img src="notes/meat.png" width="40%" alt="meat">
 
 ## Apply material editing effects
 
@@ -157,13 +157,13 @@ im2 = modif(im, effect = "shine", strength = 3.0) # may take some seconds
 plot(im2) # see the result
 ```
 
-<p><img src="notes/face.jpg" width="40%"> <img src="notes/face_shine30.jpg" width="40%"></p>
+<p><img src="notes/face.jpg" width="40%" alt="face"> <img src="notes/face_shine30.jpg" width="40%" alt="face"></p>
 
 On the left is the input image, and on the right is the result of the ```shine``` effect.
 
 The ```strength``` parameter is used to control the strength of the image processing effect. A larger value of ```strength``` will produce a stronger effect:
 
-<p><img src="notes/face_shine01.jpg" width="20%"><img src="notes/face.jpg" width="20%"><img src="notes/face_shine20.jpg" width="20%"><img src="notes/face_shine30.jpg" width="20%"><img src="notes/face_shine40.jpg" width="20%"></p>
+<p><img src="notes/face_shine01.jpg" width="20%" alt="face"><img src="notes/face.jpg" width="20%" alt="face"><img src="notes/face_shine20.jpg" width="20%" alt="face"><img src="notes/face_shine30.jpg" width="20%" alt="face"><img src="notes/face_shine40.jpg" width="20%" alt="face"></p>
 
 The ```strength``` parameters, from left to right, are 0.1, 1, 2, 3, and 4.
 
@@ -187,19 +187,19 @@ plot(im)
 plot(im3)
 ```
 
-<p><img src="notes/face_aging01.jpg" width="30%"> <img src="notes/face.jpg" width="30%"> <img src="notes/face_aging25.jpg" width="30%"></p>
+<p><img src="notes/face_aging01.jpg" width="30%" alt="face"> <img src="notes/face.jpg" width="30%" alt="face"> <img src="notes/face_aging25.jpg" width="30%" alt="face"></p>
 
 Compared to the original (center), skin blemishes are reduced on the left and boosted on the right.
 
 The figure below summarizes outputs of the shine and aging effects.
 
-<p><img src="notes/examples_functionality.jpg" width="100%"></p>
+<p><img src="notes/examples_functionality.jpg" width="100%" alt="functionality"></p>
 
 ## The strength parameter
 
 Using the aging effect as an example, the effect of the strength parameter is examined in more detail in the figure below. If the value of the strength parameter is greater than 1, a boosting effect that increases the stains/blemishes occurs; if it is less than 1, a reducing effect that decreases the stains/blemishes occurs.
 
-<p><img src="notes/examples_strength.jpg" width="100%"></p>
+<p><img src="notes/examples_strength.jpg" width="100%" alt="strength"></p>
 
 To get a boosting effect, a strength value of 2 to 6 usually yields reasonable results. The strength parameter can be a negative value, but in most cases setting a negative value will produce unrealistic results (e.g., contrast reversal)
 
@@ -207,7 +207,7 @@ To get a boosting effect, a strength value of 2 to 6 usually yields reasonable r
 
 This package has several other effects in addition to the shine and aging effects. All available effects are: shine, spots, rough, stain, blemish, shadow, aging. A visual summary of these effects is shown in the figure below.
 
-<p><img src="notes/examples_list.jpg" width="100%"></p>
+<p><img src="notes/examples_list.jpg" width="100%" alt="list"></p>
 
 The first column of the figure shows the name of each effect, and the second column shows the perceptual features controlled by that effect. The third and subsequent columns show the input and output images.
 
@@ -231,7 +231,7 @@ Note that the ```aging``` effect is an effect that edits two BS features, HLA an
 
 To better understand the nature of each image editing effect, it is helpful to compare the results of all editing effects on a single image. The figure below summarizes the results of the editing effects on a face and a food image (note that the image in the row with a strength value of 1 is the input image). By comparing the images in the rows with large values of the strength parameter, it is easier to see the characteristics of each effect.
 
-<p><img src="notes/examples_list2.jpg" width="100%"></p>
+<p><img src="notes/examples_list2.jpg" width="100%" alt="list"></p>
 
 Setting a negative value for the strength parameter often results in an unnatural image (see images in the bottom rows of the figure), but using a large negative value for the strength parameter makes it easier to compare which areas are affected by each effect. For example, the rough effect and the blemish effect produce similar results, but if you compare the images in the row with a strength value of -5, you can clearly see that they are not identical.
 
@@ -247,7 +247,7 @@ im2 = modif(im, effect = c("shine", "aging"), strength = c(0.2, 3))
 plot(im2)
 ```
 
-<p><img src="notes/face_shine_aging.jpg" width="30%"></p>
+<p><img src="notes/face_shine_aging.jpg" width="30%" alt="face"></p>
 
 The above command simultaneously applies a shine effect of strength = 0.2 and an aging effect of strength = 3, resulting in a less shiny and more blemished image.
 
@@ -276,7 +276,7 @@ The mask image is an image in which the area to be edited is white and the rest 
 
 For example, the mask image representing the skin region of the face image in this package is as follows (Image on the right).
 
-<p><img src="notes/face.jpg" width="40%"> <img src="notes/mask.jpg" width="40%"></p>
+<p><img src="notes/face.jpg" width="40%" alt="face"> <img src="notes/mask.jpg" width="40%" alt="face"></p>
 
 Specify a mask image for the ```mask``` argument of the ```modif``` function.
 
@@ -295,7 +295,7 @@ plot(im2)
 plot(im3)
 ```
 
-<p><img src="notes/face.jpg" width="32%"> <img src="notes/face_nomask_shine3.png" width="32%"> <img src="notes/face_mask_shine3.png" width="32%"><br>
+<p><img src="notes/face.jpg" width="32%" alt="face"> <img src="notes/face_nomask_shine3.png" width="32%" alt="face"> <img src="notes/face_mask_shine3.png" width="32%" alt="face"><br>
 Left: input image, Center: edited without mask, Right: edited with mask</p>
 
 An example of the HHP(shine) effect applied to the face image is shown above. When editing without using a mask, the entire image is edited, so the hair is shined as well as the skin. On the other hand, when editing with a mask image that specifies the skin area, only the skin area is changed, while the other areas remain the same as in the input image.

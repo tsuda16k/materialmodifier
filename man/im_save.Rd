@@ -26,10 +26,10 @@ Save an image to disk
 \examples{
 \dontrun{
 # face.png is saved to a path (if a path is specified)
-im_save( face, path = NULL )
+im_save( face, path = "yourpath" )
 # img.png is saved to a path (if a path is specified)
-im_save( face, name = "img", path = NULL )
+im_save( face, name = "img", path = "yourpath" )
 # myimage.jpg is saved to a path (if a path is specified)
-im_save( face, name = "myimage", path = NULL, format = "jpg" )
+im_save( face, name = "myimage", path = "yourpath", format = "jpg" )
 }
 }

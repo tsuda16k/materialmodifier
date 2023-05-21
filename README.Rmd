@@ -44,11 +44,25 @@ Mac users need to install XQuartz (https://www.xquartz.org/).
 
 ## Installation
 
-There are two ways to install the package: 1. via GitHub, 2. via CRAN.
+There are two ways to install the package: 1. via CRAN, 2. via GitHub.
 
-#### 1. Installation via GitHub (recommended)
+#### 1. Installation via CRAN
 
-(The reason for recommending installation via GitHub is that if a version of the package is updated by adding new features or removing bugs, installing from GitHub will allow you to use that latest version. There can be a time lag of several weeks before CRAN data is updated.)
+The package is available on CRAN. It can be installed with:
+
+```{r, eval=FALSE, echo=TRUE}
+install.packages("materialmodifier")
+```
+
+Then, attach the package.
+
+```{r, eval=FALSE, echo=TRUE}
+library(materialmodifier)
+```
+
+#### 2. Installation via GitHub
+
+(The reason for recommending installation via GitHub is that if a version of the package is updated by adding new features or removing bugs, installing from GitHub will allow you to use that latest version. There can be a time lag before the CRAN version is updated. If some errors or bugs occur for the CRAN version, try installing the package via GitHub.)
 
 You can install the development version of the ```materialmodifier``` package via GitHub, by using the ```devtools``` package.
 
@@ -72,22 +86,6 @@ devtools::install_github("tsuda16k/materialmodifier")
 Then, attach the package.
 
 ```{r}
-library(materialmodifier)
-```
-
-#### 2. Installation via CRAN (currently not recommended)
-
-(I do not recommend installing via CRAN because the package available on CRAN is not the latest version and lacks certain features. Although the package version will be updated soon, I suggest installing it via GitHub in the meantime.)
-
-The package is available on CRAN. It can be installed with:
-
-```{r, eval=FALSE, echo=TRUE}
-install.packages("materialmodifier")
-```
-
-Then, attach the package.
-
-```{r, eval=FALSE, echo=TRUE}
 library(materialmodifier)
 ```
 
